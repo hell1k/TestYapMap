@@ -3,10 +3,7 @@ package common;
 import com.google.common.io.Files;
 import io.qameta.allure.Attachment;
 import io.qameta.allure.Step;
-import org.openqa.selenium.By;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import java.io.File;
@@ -65,5 +62,11 @@ public class BaseElementsPage {
 
     public By elementName(String name) {
         return By.name(name);
+    }
+
+    @Step("Получение текста элемента по локатору")
+    public String getText(By locator) {
+        WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+        return element.getText(); // Возвращаем текст из найденного элемента
     }
 }
