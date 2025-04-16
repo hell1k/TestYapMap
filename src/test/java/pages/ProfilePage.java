@@ -21,8 +21,7 @@ public class ProfilePage extends BasePage {
     By nicknameField = By.xpath("(//XCUIElementTypeTextField)[3]");
     By backBtn = By.name("ic ic back");
     By yesButton = By.name("Yes");
-    //    By fullNameView = By.xpath("(//XCUIElementTypeStaticText)[2]");
-    By nicknameView = By.xpath("(//XCUIElementTypeButton)[1]");
+    By dataField = By.xpath("(//XCUIElementTypeTextField[@value])[4]");
 
     @Step("Open profile")
     public void openProfile() {
@@ -42,8 +41,8 @@ public class ProfilePage extends BasePage {
         click(groups);
     }
 
-    @Step("Edit Profile")
-    public void editProfileFields() {
+    @Step("Редактирование имени пользователя")
+    public void editProfileName() {
         click(editProfileBtn);
 
         String newFirstName = "John" + new Random().nextInt(10000);
@@ -51,7 +50,6 @@ public class ProfilePage extends BasePage {
         String newNickname = "nickname" + new Random().nextInt(99999);
 
         String fullNameStr = newFirstName + " " + newLastName;
-
 
         // Очищаем поля и вводим новые данные
         clearAndSendKeys(firstNameField, newFirstName);
@@ -64,18 +62,53 @@ public class ProfilePage extends BasePage {
         // Нажимаем на кнопку "Yes"
         click(yesButton);
         waitElement(By.xpath("//XCUIElementTypeStaticText[@name='" + fullNameStr + "']"));
-        waitElement(By.xpath("(//XCUIElementTypeButton)[1]"));
-
-        //Проверяем, что данные были обновлены
-//        assert getText(fullNameView).equals(fullNameStr) : "Full Name не совпадает";
-//        assert getText(lastNameView).equals(newLastName) : "Last name не совпадает";
-//        assert getText(nicknameView).equals(newNickname) : "Nickname не совпадает";
+        waitElement(By.xpath("//XCUIElementTypeButton[@name='@" + newNickname + " / 19 years']"));
     }
 
     private void clearAndSendKeys(By element, String text) {
         WebElement el = driver.findElement(element);
         el.click();
-        el.clear(); // полностью очищает поле
+        el.clear();
         el.sendKeys(text);
     }
+
+    public class ProfileEditing {
+
+        public void editProfile() {
+            // Редактирование даты
+            editDate();
+            String gender = editProfileData("Gender");
+            checkDataName(gender);
+            String status = editProfileData("Status");
+            checkDataName(status);
+            String orientation = editProfileData("Sexual orientation");
+            checkDataName(orientation);
+            String religion = editProfileData("Religion");
+            checkDataName(religion);
+
+            String ethnos = editProfileData("Ethnos");
+            checkDataName(ethnos);
+
+
+            String height = String.valueOf(150 + new Random().nextInt(50));
+            String weight = String.valueOf(50 + new Random().nextInt(50));
+
+            editHeight(height);
+            editWeight(weight);
+
+            profile.click(backBtn);
+
+            // Возвращение всех значений
+            return new String[]{gender, status, orientation, religion, ethnos, height, weight};
+        }
+
+//        private void editDate() {
+//            profile.click(dataField);
+//            int randomDate = 1 + new Random().nextInt(28);
+//            String dateXpath = "//*[@text='" + randomDate + "']";
+//            click(By.xpath(dateXpath), "дата " + randomDate);
+//            click(dateOk, "кнопка Ок");
+//        }
+    }
 }
+

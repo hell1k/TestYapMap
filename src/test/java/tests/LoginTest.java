@@ -10,6 +10,14 @@ public class LoginTest extends BasePage {
     @Description("Редактирование имени пользователя")
     public void editProfile() {
         profile.openProfile();
-        profile.editProfileFields();
+        profile.editProfileName();
     }
+
+    @Test(description = "Редактирование полей профиля")
+    @Description("Редактирование полей профиля")
+    public void editProfileData() {
+        profile.openProfile();
+
+    }
+
 }
