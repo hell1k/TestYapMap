@@ -5,6 +5,7 @@ import common.Menu;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+
 import java.util.Random;
 
 public class ProfilePage extends BasePage {
@@ -20,10 +21,8 @@ public class ProfilePage extends BasePage {
     By nicknameField = By.xpath("(//XCUIElementTypeTextField)[3]");
     By backBtn = By.name("ic ic back");
     By yesButton = By.name("Yes");
-//    By firstNameView = By.name("hatra999");
-//    By lastNameView = By.name("Doe968");
-//    By nicknameView = By.name("@mickname44899");
-//    By selectAllBtn = By.name("Select All");
+    //    By fullNameView = By.xpath("(//XCUIElementTypeStaticText)[2]");
+    By nicknameView = By.xpath("(//XCUIElementTypeButton)[1]");
 
     @Step("Open profile")
     public void openProfile() {
@@ -51,6 +50,9 @@ public class ProfilePage extends BasePage {
         String newLastName = "Doe" + new Random().nextInt(10000);
         String newNickname = "nickname" + new Random().nextInt(99999);
 
+        String fullNameStr = newFirstName + " " + newLastName;
+
+
         // Очищаем поля и вводим новые данные
         clearAndSendKeys(firstNameField, newFirstName);
         clearAndSendKeys(lastNameField, newLastName);
@@ -61,9 +63,11 @@ public class ProfilePage extends BasePage {
 
         // Нажимаем на кнопку "Yes"
         click(yesButton);
+        waitElement(By.xpath("//XCUIElementTypeStaticText[@name='" + fullNameStr + "']"));
+        waitElement(By.xpath("(//XCUIElementTypeButton)[1]"));
 
         //Проверяем, что данные были обновлены
-//        assert getText(firstNameView).equals(newFirstName) : "First name не совпадает";
+//        assert getText(fullNameView).equals(fullNameStr) : "Full Name не совпадает";
 //        assert getText(lastNameView).equals(newLastName) : "Last name не совпадает";
 //        assert getText(nicknameView).equals(newNickname) : "Nickname не совпадает";
     }
