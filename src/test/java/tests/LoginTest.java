@@ -3,6 +3,7 @@ package tests;
 import common.BasePage;
 import io.qameta.allure.Description;
 import org.testng.annotations.Test;
+import pages.ProfilePage;
 
 public class LoginTest extends BasePage {
 
@@ -17,7 +18,6 @@ public class LoginTest extends BasePage {
     @Description("Редактирование полей профиля")
     public void editProfileData() {
         profile.openProfile();
-
+        profile.editProfile();
     }
-
 }
