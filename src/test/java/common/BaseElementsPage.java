@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 import static common.BasePage.driver;
@@ -37,31 +38,36 @@ public class BaseElementsPage {
     }
 
     @Step("Ожидание элемента")
-    public void waitElement(By xpath) {
-        wait.until(ExpectedConditions.presenceOfElementLocated(xpath));
+    public void waitElement(By locator) {
+        wait.until(ExpectedConditions.presenceOfElementLocated(locator));
+    }
+
+    @Step("Ожидание элемента")
+    public void waitClickableElement(By locator) {
+        wait.until(ExpectedConditions.presenceOfElementLocated(locator));
     }
 
     @Step("Клик по элементу")
     public void click(By locator) {
-        wait.until(ExpectedConditions.elementToBeClickable(locator));
-        driver.findElement(locator).click();
+       waitClickableElement(locator);
+        getElement(locator).click();
     }
 
     public int getElementsAmount(By locator) {
-        return driver.findElements(locator).size();
+        return getElements(locator).size();
     }
 
     @Step("Заполнение поля текстом {string}")
-    public void setText(By xpath, String string) {
-        driver.findElement(xpath).sendKeys(string);
+    public void setText(By locator, String string) {
+        getElement(locator).sendKeys(string);
     }
 
     public String getText(By locator) {
-        return driver.findElement(locator).getText();
+        return getElement(locator).getText();
     }
 
     public void waitElementName(String name) {
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.name(name)));
+        waitElement(By.name(name));
     }
 
     public int getRandomNumber(int number) {
@@ -87,5 +93,13 @@ public class BaseElementsPage {
                 .addAction(finger1.createPointerMove(Duration.ofMillis(100), PointerInput.Origin.viewport(), endX, endY))
                 .addAction(finger1.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
         driver.perform(Collections.singleton(sequence));
+    }
+
+    public WebElement getElement(By locator) {
+        return driver.findElement(locator);
+    }
+
+    public List<WebElement> getElements(By locator) {
+        return driver.findElements(locator);
     }
 }
