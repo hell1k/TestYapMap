@@ -56,6 +56,10 @@ public class BaseElementsPage {
         driver.findElement(xpath).sendKeys(string);
     }
 
+    public String getText(By locator) {
+        return driver.findElement(locator).getText();
+    }
+
     public void waitElementName(String name) {
         wait.until(ExpectedConditions.presenceOfElementLocated(By.name(name)));
     }
