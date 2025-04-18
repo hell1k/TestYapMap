@@ -47,12 +47,23 @@ public class BaseElementsPage {
         driver.findElement(locator).click();
     }
 
+    @Step("Клик по элементу {string}")
+    public void click(By locator, String string) {
+        wait.until(ExpectedConditions.elementToBeClickable(locator));
+        driver.findElement(locator).click();
+    }
+
     public int getElementsAmount(By locator) {
         return driver.findElements(locator).size();
     }
 
     @Step("Заполнение поля текстом {string}")
     public void setText(By xpath, String string) {
+        driver.findElement(xpath).sendKeys(string);
+    }
+
+    @Step("Заполнение поля {fieldName} текстом {string}")
+    public void setText(By xpath, String string, String fieldName) {
         driver.findElement(xpath).sendKeys(string);
     }
 
