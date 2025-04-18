@@ -154,7 +154,7 @@ public class ProfilePage extends BasePage {
         // Нажимаем на кнопку "Yes"
         click(noButton);
     }
-}
+
 
     public void editProfile() {
         clickElitProfile();
