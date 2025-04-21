@@ -50,7 +50,7 @@ public class ProfilePage extends BasePage {
     By ethnicOptions = By.xpath("//XCUIElementTypeCollectionView/XCUIElementTypeCell");
     By deleteBtn = By.xpath("//XCUIElementTypeKey[@name='Delete']");
     By switchToggle = By.xpath("(//XCUIElementTypeSwitch[@value])[2]");
-    By doneButton = By.xpath("//XCUIElementTypeButton[@name=\"DONE\"]");
+    By doneButton = By.xpath("//XCUIElementTypeButton[@name=\"DONE\" or @name='Готово']");
     By photoLibraryBtn = By.xpath("//XCUIElementTypeButton[@name=\"Photo Library\"]");
     By choosePhoto = By.xpath("//XCUIElementTypeImage[@name=\"PXGGridLayout-Info\" and @label=\"Фотография, 31 марта 2018 г., 02:14\"]");
     By chooseBnt = By.xpath("//XCUIElementTypeButton[@name=\"Done\"]");
