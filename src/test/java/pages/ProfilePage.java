@@ -2,7 +2,6 @@ package pages;
 
 import common.BasePage;
 import common.Menu;
-import common.BaseElementsPage;
 import common.TestData;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
@@ -85,12 +84,8 @@ public class ProfilePage extends BasePage {
         click(groups);
     }
 
-//    public String getFullName() {
-//        return profile.getText(profileFullName);
-//    }
-
     public String getFullName() {
-        return driver.findElement(profileFullName).getText();
+        return getElement(profileFullName).getText();
     }
 
     @Step("Open Profile Editor")
@@ -101,7 +96,6 @@ public class ProfilePage extends BasePage {
     @Step("Fill First Name")
     public String fillFirstName() {
         String newFirstName = "John" + new Random().nextInt(10000);
-        // Очищаем поле и вводим новые данные
         clearAndSendKeys(firstNameField, newFirstName);
         return newFirstName;
     }
@@ -109,7 +103,6 @@ public class ProfilePage extends BasePage {
     @Step("Fill Last Name")
     public String fillLastName() {
         String newLastName = "Doe" + new Random().nextInt(10000);
-        // Очищаем поле и вводим новые данные
         clearAndSendKeys(lastNameField, newLastName);
         return newLastName;
     }
@@ -117,24 +110,16 @@ public class ProfilePage extends BasePage {
     @Step("Fill Nickname")
     public String fillNickname() {
         String newNickname = "nickname" + new Random().nextInt(99999);
-        // Очищаем поле и вводим новые данные
         clearAndSendKeys(nicknameField, newNickname);
         return newNickname;
     }
 
-    @Step("Edit Profile")
-    public void editProfileFields(String newFirstName, String newLastName, String newNickname) {
-        String fullNameStr = newFirstName + " " + newLastName;
-
-        // Нажать кнопку Назад
     @Step("Edit user profile name")
     public void editProfileName() {
-
         String firstName = TestData.getFirstName();
         String lastName = TestData.getLastName();
         String nickname = TestData.getNickname();
         String fullNameStr = firstName + " " + lastName;
-
         clearAndSendKeys(firstNameField, firstName);
         clearAndSendKeys(lastNameField, lastName);
         clearAndSendKeys(nicknameField, nickname);
@@ -146,26 +131,20 @@ public class ProfilePage extends BasePage {
 
     @Step("Clear field and send keys")
     private void clearAndSendKeys(By element, String text) {
-        WebElement el = driver.findElement(element);
+        WebElement el = getElement(element);
         el.click();
         el.clear();
         el.sendKeys(text);
     }
 
     @Step("Undo Profile")
-    public void UndoProfileChanges(String newFirstName, String newLastName, String newNickname) {
-        String fullNameStr = newFirstName + " " + newLastName;
-
-        // Нажать кнопку Назад
+    public void undoProfileChanges() {
         click(backBtn);
-
-        // Нажимаем на кнопку "Yes"
         click(noButton);
     }
-}
 
     @Step("Edit full profile information")
-    public void editProfile() {
+    public void editProfile() throws InterruptedException {
         clickEditProfile();
         editProfileName();
         editDate();
@@ -312,8 +291,7 @@ public class ProfilePage extends BasePage {
     }
 
     @Step("Add profile photo")
-    public void addPhoto() {
-
+    public void addPhoto() throws InterruptedException {
         if (getElementsAmount(deletePhotoBnt) > 0) {
             click(deletePhotoBnt);
         }
@@ -322,11 +300,7 @@ public class ProfilePage extends BasePage {
         click(photoLibraryBtn);
         click(choosePhoto);
         click(chooseBnt);
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        wait(3);
     }
 
     @Step("Edit 'About me' section")
@@ -334,7 +308,6 @@ public class ProfilePage extends BasePage {
         WebElement textInput = driver.findElement(textInputLocator);
         textInput.clear();
         String randomString = TestData.getRandomNumber(15);
-
         setText(aboutMeField, randomString);
         textInput.click();
     }
@@ -366,12 +339,11 @@ public class ProfilePage extends BasePage {
 //    }
 
     @Step("Edit email")
-    public void emailEdit () {
+    public void emailEdit() {
         click(emailField);
-        WebElement emailInput = driver.findElement(emailInputLocator);
+        WebElement emailInput = getElement(emailInputLocator);
         emailInput.clear();
-        String randomEmail = TestData.generateRandomEmail();
-        emailInput.sendKeys(randomEmail);
+        emailInput.sendKeys(TestData.generateRandomEmail());
     }
 
     @Step("Edit country")

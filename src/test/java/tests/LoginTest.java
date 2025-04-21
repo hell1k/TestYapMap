@@ -3,7 +3,6 @@ package tests;
 import common.BasePage;
 import io.qameta.allure.Description;
 import org.testng.annotations.Test;
-import pages.ProfilePage;
 
 public class LoginTest extends BasePage {
 
@@ -11,17 +10,13 @@ public class LoginTest extends BasePage {
     @Description("Редактирование имени пользователя")
     public void editProfile() {
         profile.openProfile();
-        profile.editProfileName();
         profile.openProfileEditor();
-        String firstname = profile.fillFirstName();
-        String lastname = profile.fillLastName();
-        String nickname = profile.fillNickname();
-        profile.editProfileFields(firstname, lastname, nickname);
+        profile.editProfileName();
     }
 
     @Test(description = "Редактирование полей профиля")
     @Description("Редактирование полей профиля")
-    public void editProfileData() {
+    public void editProfileData() throws InterruptedException {
         profile.openProfile();
         profile.editProfile();
     }
@@ -32,10 +27,7 @@ public class LoginTest extends BasePage {
         profile.openProfile();
         String nameBefore = profile.getFullName();
         profile.openProfileEditor();
-        String firstname = profile.fillFirstName();
-        String lastname = profile.fillLastName();
-        String nickname = profile.fillNickname();
-        profile.UndoProfileChanges(firstname, lastname, nickname);
+        profile.undoProfileChanges();
         assert profile.getFullName().equals(nameBefore) : "Старое и новое имена не совпадают";
     }
 }
