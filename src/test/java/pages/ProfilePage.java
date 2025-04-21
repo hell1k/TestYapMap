@@ -7,6 +7,7 @@ import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -62,6 +63,10 @@ public class ProfilePage extends BasePage {
     By noButton = By.name("No");
     //    By fullNameView = By.xpath("(//XCUIElementTypeStaticText)[2]");
     By nicknameView = By.xpath("(//XCUIElementTypeButton)[1]");
+    By okButton = By.name("Ok");
+    By closeButton = By.name("close icon");
+    By reportBug = By.xpath("//XCUIElementTypeStaticText[@name='Report a Bug']");
+
 
     @Step("Open profile")
     public void openProfile() {
@@ -357,5 +362,33 @@ public class ProfilePage extends BasePage {
         int randomIndex = new Random().nextInt(countryElement.size());
         WebElement randomCountryElement = countryElement.get(randomIndex);
         randomCountryElement.click();
+    }
+
+    public void checkProfileElements() {
+        List<String> elements = Arrays.asList("Favorites", "Groups", "Events", "Businesses", "My Social networks", "Channels", "Dating",
+                "Market", "Pets", "Jobs", "Service finder", "Places to Visit", "Purchase history", "Pending requests",
+                "Blacklist", "Settings", "Help");
+
+        for (String element : elements) {
+            By elementLocator = By.xpath("//XCUIElementTypeStaticText[@name='" + element + "']");
+            click(elementLocator, element);
+            click(backBtn, "кнопка Назад");
+            waitClickableElement(elementLocator);
+        }
+        List<String> webelements = Arrays.asList("Ads manager", "About");
+        for (String element : webelements) {
+            By elementLocator = By.xpath("//XCUIElementTypeStaticText[@name='" + element + "']");
+            if (element.equals("Ads manager")) {
+                click(elementLocator, element);
+                click(closeButton, "кнопка Закрыть");
+                click(doneButton, "кнопка Готово");
+            }
+//            if (element.equals("About")) {
+//                click(elementLocator);
+//                swipeRight();
+//           }
+        }
+        click(reportBug, "пункт Report a Bug");
+        click(okButton, "кнопка Ок");
     }
 }

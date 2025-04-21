@@ -49,8 +49,14 @@ public class BaseElementsPage {
 
     @Step("Клик по элементу")
     public void click(By locator) {
-       waitClickableElement(locator);
+        waitClickableElement(locator);
         getElement(locator).click();
+    }
+
+    @Step("Клик по элементу {string}")
+    public void click(By locator, String string) {
+        wait.until(ExpectedConditions.elementToBeClickable(locator));
+        driver.findElement(locator).click();
     }
 
     public int getElementsAmount(By locator) {
@@ -60,6 +66,11 @@ public class BaseElementsPage {
     @Step("Заполнение поля текстом {string}")
     public void setText(By locator, String string) {
         getElement(locator).sendKeys(string);
+    }
+
+    @Step("Заполнение поля {fieldName} текстом {string}")
+    public void setText(By xpath, String string, String fieldName) {
+        driver.findElement(xpath).sendKeys(string);
     }
 
     public String getText(By locator) {
@@ -95,6 +106,22 @@ public class BaseElementsPage {
         driver.perform(Collections.singleton(sequence));
     }
 
+    public void swipeRight() {
+        Dimension size = driver.manage().window().getSize();
+        int startX = 0;
+        int startY = size.getHeight() / 2;
+        int endX = 300;
+        int endY = startY;
+        PointerInput finger1 = new PointerInput(PointerInput.Kind.TOUCH, "finger1");
+        Sequence sequence = new Sequence(finger1, 1)
+                .addAction(finger1.createPointerMove(Duration.ZERO, PointerInput.Origin.viewport(), startX, startY))
+                .addAction(finger1.createPointerDown(PointerInput.MouseButton.LEFT.asArg()))
+                .addAction(new Pause(finger1, Duration.ofMillis(200)))
+                .addAction(finger1.createPointerMove(Duration.ofMillis(100), PointerInput.Origin.viewport(), endX, endY))
+                .addAction(finger1.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
+        driver.perform(Collections.singleton(sequence));
+    }
+
     public WebElement getElement(By locator) {
         return driver.findElement(locator);
     }
@@ -103,3 +130,4 @@ public class BaseElementsPage {
         return driver.findElements(locator);
     }
 }
+
