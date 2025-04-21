@@ -3,6 +3,7 @@ package pages;
 import common.BasePage;
 import common.Menu;
 import common.BaseElementsPage;
+import common.TestData;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -38,7 +39,25 @@ public class ProfilePage extends BasePage {
     By phoneField = By.xpath("(//XCUIElementTypeTextField[@value])[1]");
     By emailField = By.xpath("(//XCUIElementTypeTextField[@value])[2]");
     By countryField = By.xpath("(//XCUIElementTypeTextField[@value])[3]");
-
+    By yearField = By.xpath("(//XCUIElementTypeTable)[1]//XCUIElementTypeStaticText[@name]");
+    By monthField = By.xpath("(//XCUIElementTypeTable)[2]//XCUIElementTypeStaticText[@name]");
+    By dayField = By.xpath("(//XCUIElementTypeTable)[3]//XCUIElementTypeStaticText[@name]");
+    By yearFieldDoneBtn = By.xpath("(//XCUIElementTypeButton[@name=\"DONE\"])");
+    By genderOptions = By.xpath("//XCUIElementTypeCollectionView/XCUIElementTypeCell");
+    By religionOptions = By.xpath("//XCUIElementTypeCollectionView/XCUIElementTypeCell");
+    By ethnicOptions = By.xpath("//XCUIElementTypeCollectionView/XCUIElementTypeCell");
+    By deleteBtn = By.xpath("//XCUIElementTypeKey[@name='Delete']");
+    By switchToggle = By.xpath("(//XCUIElementTypeSwitch[@value])[2]");
+    By doneButton = By.xpath("//XCUIElementTypeButton[@name=\"DONE\"]");
+    By photoLibraryBtn = By.xpath("//XCUIElementTypeButton[@name=\"Photo Library\"]");
+    By choosePhoto = By.xpath("//XCUIElementTypeImage[@name=\"PXGGridLayout-Info\" and @label=\"Фотография, 31 марта 2018 г., 02:14\"]");
+    By chooseBnt = By.xpath("//XCUIElementTypeButton[@name=\"Done\"]");
+    By textInputLocator = By.xpath("//XCUIElementTypeTextView[@value]");
+    By codeOptions = By.xpath("//XCUIElementTypeCollectionView/XCUIElementTypeCell");
+    By phoneInputLocator = By.xpath("(//XCUIElementTypeTextField[@value])[1]");
+    By emailInputLocator = By.xpath("(//XCUIElementTypeTextField[@value])[2]");
+    By countryOptions = By.xpath("//XCUIElementTypeCollectionView/XCUIElementTypeCell");
+    By keys = By.xpath("//XCUIElementTypeKey[not(contains(@name, 'Delete')) and not(contains(@name, ','))]");
 
     @Step("Open profile")
     public void openProfile() {
@@ -46,42 +65,39 @@ public class ProfilePage extends BasePage {
         waitElement(favorites);
     }
 
+    @Step("Click on Business section")
     public void clickBusiness() {
         click(business);
     }
 
+    @Step("Click on Events section")
     public void clickEvents() {
         click(events);
     }
 
+    @Step("Click on Groups section")
     public void clickGroups() {
         click(groups);
     }
 
-    @Step("Редактирование имени пользователя")
+    @Step("Edit user profile name")
     public void editProfileName() {
-        click(editProfileBtn);
 
-        String newFirstName = "John" + new Random().nextInt(10000);
-        String newLastName = "Doe" + new Random().nextInt(10000);
-        String newNickname = "nickname" + new Random().nextInt(99999);
+        String firstName = TestData.getFirstName();
+        String lastName = TestData.getLastName();
+        String nickname = TestData.getNickname();
+        String fullNameStr = firstName + " " + lastName;
 
-        String fullNameStr = newFirstName + " " + newLastName;
-
-        // Очищаем поля и вводим новые данные
-        clearAndSendKeys(firstNameField, newFirstName);
-        clearAndSendKeys(lastNameField, newLastName);
-        clearAndSendKeys(nicknameField, newNickname);
-
-        // Нажать кнопку Назад
+        clearAndSendKeys(firstNameField, firstName);
+        clearAndSendKeys(lastNameField, lastName);
+        clearAndSendKeys(nicknameField, nickname);
         click(backBtn);
-
-        // Нажимаем на кнопку "Yes"
         click(yesButton);
         waitElement(By.xpath("//XCUIElementTypeStaticText[@name='" + fullNameStr + "']"));
-        waitElement(By.xpath("//XCUIElementTypeButton[@name='@" + newNickname + " / 19 years']"));
+        waitElement(By.xpath("//XCUIElementTypeButton[contains(@name,@" + nickname + ")]"));
     }
 
+    @Step("Clear field and send keys")
     private void clearAndSendKeys(By element, String text) {
         WebElement el = driver.findElement(element);
         el.click();
@@ -89,8 +105,9 @@ public class ProfilePage extends BasePage {
         el.sendKeys(text);
     }
 
+    @Step("Edit full profile information")
     public void editProfile() {
-        clickElitProfile();
+        clickEditProfile();
         editProfileName();
         editDate();
         editStatus();
@@ -109,63 +126,43 @@ public class ProfilePage extends BasePage {
         waitASecond();
     }
 
-    public void clickElitProfile() {
+    @Step("Click on Edit Profile button")
+    public void clickEditProfile() {
         click(editProfileBtn);
     }
 
+    @Step("Edit birth date")
     public void editDate() {
+        click(editProfileBtn);
         click(dataField);
-
-        // Локатор для всех годов в таблице
-        By yearField = By.xpath("(//XCUIElementTypeTable)[1]//XCUIElementTypeStaticText[@name]");
-        List<WebElement> yearElements = driver.findElements(yearField);
+        List<WebElement> yearElements = getElements(yearField);
 
         if (yearElements.isEmpty()) {
             throw new IllegalStateException("Список годов пуст — элементы не найдены по локатору: " + yearField);
         }
         int randomIndex = new Random().nextInt(yearElements.size());
         WebElement randomYearElement = yearElements.get(randomIndex);
-        String yearText = randomYearElement.getText();
-
-        // Кликаем по выбранному году
         randomYearElement.click();
-        System.out.println("Выбран год: " + yearText);
-
-        // Локатор для всех месяцев в таблице
-        By monthField = By.xpath("(//XCUIElementTypeTable)[2]//XCUIElementTypeStaticText[@name]");
-        List<WebElement> monthElements = driver.findElements(monthField);
+        List<WebElement> monthElements = getElements(monthField);
 
         if (monthElements.isEmpty()) {
             throw new IllegalStateException("Список месяцев пуст — элементы не найдены по локатору: " + monthField);
         }
         int randomMonthIndex = new Random().nextInt(monthElements.size());
         WebElement randomMonthElement = monthElements.get(randomMonthIndex);
-        String monthText = randomMonthElement.getText();
-
-        // Кликаем по выбранному месяцу
         randomMonthElement.click();
-        System.out.println("Выбран месяц: " + monthText);
-
-        // Локатор для всех дней в таблице
-        By dayField = By.xpath("(//XCUIElementTypeTable)[3]//XCUIElementTypeStaticText[@name]");
-        List<WebElement> dayElements = driver.findElements(dayField);
+        List<WebElement> dayElements = getElements(dayField);
 
         if (dayElements.isEmpty()) {
             throw new IllegalStateException("Список дней пуст — элементы не найдены по локатору: " + dayField);
         }
         int randomDayIndex = new Random().nextInt(dayElements.size());
         WebElement randomDayElement = dayElements.get(randomDayIndex);
-        String dayText = randomDayElement.getText();
-
-        // Кликаем по выбранному дню
         randomDayElement.click();
-        System.out.println("Выбран день: " + dayText);
-
-        // Кликаем по кнопке DONE
-        By yearFieldDoneBtn = By.xpath("(//XCUIElementTypeButton[@name=\"DONE\"])");
         click(yearFieldDoneBtn);
     }
 
+    @Step("Edit relationship status")
     public void editStatus() {
         click(statusField);
         By statusOptions = By.xpath("//XCUIElementTypeStaticText[@name]");
@@ -176,112 +173,74 @@ public class ProfilePage extends BasePage {
         }
         // Исключаем первый элемент и выбираем случайный из оставшихся
         List<WebElement> remainingStatusElements = statusElement.subList(1, statusElement.size());
-
-        // Генерируем случайный индекс для оставшихся элементов
         int randomIndex = new Random().nextInt(remainingStatusElements.size());
         WebElement randomStatusElement = remainingStatusElements.get(randomIndex);
-        String statusText = randomStatusElement.getText();
-
-        // Клик по выбранному статусу
         randomStatusElement.click();
-        System.out.println("Выбран статус: " + statusText);
     }
 
+    @Step("Edit gender")
     public void editGender() {
         click(genderField);
-        By genderOptions = By.xpath("//XCUIElementTypeCollectionView/XCUIElementTypeCell");
-        List<WebElement> genderElement = driver.findElements(genderOptions);
+        List<WebElement> genderElement = getElements(genderOptions);
 
         if (genderElement.size() <= 1) {
             throw new IllegalStateException("Нет элементов для выбора");
         }
         int randomIndex = new Random().nextInt(genderElement.size());
         WebElement randomGenderElement = genderElement.get(randomIndex);
-        String genderText = randomGenderElement.getText();
-
         randomGenderElement.click();
-        System.out.println("Выбран пол: " + genderText);
     }
 
+    @Step("Edit religion")
     public void editReligion() {
         click(religionField);
-        By religionOptions = By.xpath("//XCUIElementTypeCollectionView/XCUIElementTypeCell");
-        List<WebElement> religionElement = driver.findElements(religionOptions);
+        List<WebElement> religionElement = getElements(religionOptions);
 
         if (religionElement.size() <= 1) {
             throw new IllegalStateException("Нет элементов для выбора");
         }
         int randomIndex = new Random().nextInt(religionElement.size());
         WebElement randomReligionElement = religionElement.get(randomIndex);
-        String religionText = randomReligionElement.getText();
-
         randomReligionElement.click();
-        System.out.println("Выбран пол: " + religionText);
     }
 
+    @Step("Edit ethnic")
     public void editEthnic() {
         click(ethnicField);
-        By ethnicOptions = By.xpath("//XCUIElementTypeCollectionView/XCUIElementTypeCell");
-        List<WebElement> ethnicElement = driver.findElements(ethnicOptions);
+        List<WebElement> ethnicElement = getElements(ethnicOptions);
 
         if (ethnicElement.size() <= 1) {
             throw new IllegalStateException("Нет элементов для выбора");
         }
         int randomIndex = new Random().nextInt(ethnicElement.size());
         WebElement randomEthnicElement = ethnicElement.get(randomIndex);
-        String ethnicText = randomEthnicElement.getText();
-
         randomEthnicElement.click();
-        System.out.println("Выбран пол: " + ethnicText);
     }
 
+    @Step("Edit height")
     public void editHeight() {
         swipeUp();
-
         click(heightField);
-
-        By heightInputLocator = By.xpath("//XCUIElementTypeTextField[@value]");
-        WebElement heightInput = driver.findElement(heightInputLocator);
-
-
-        click(By.xpath("//XCUIElementTypeKey[@name='Delete']"));
-        click(By.xpath("//XCUIElementTypeKey[@name='Delete']"));
-        click(By.xpath("//XCUIElementTypeKey[@name='Delete']"));
-
-
-        List<WebElement> digitKeys = driver.findElements(By.xpath("//XCUIElementTypeKey[not(contains(@name, 'Delete')) and not(contains(@name, ','))]"));
-
-        // Перемешать список
+        click(deleteBtn);
+        click(deleteBtn);
+        click(deleteBtn);
+        List<WebElement> digitKeys = getElements(keys);
         Collections.shuffle(digitKeys);
 
-        // Нажать на первые три
         for (int i = 0; i < 3 && i < digitKeys.size(); i++) {
             digitKeys.get(i).click();
         }
-
-        // Нажимаем на переключатель
-        By switchToggle = By.xpath("(//XCUIElementTypeSwitch[@value])[2]");
         click(switchToggle);
-
-        // Закрываем окно
-        By doneButton = By.xpath("//XCUIElementTypeButton[@name=\"DONE\"]");
         click(doneButton);
     }
 
-    public void editWeight () {
+    @Step("Edit weight")
+    public void editWeight() {
         click(weightField);
-
-        By weightInputLocator = By.xpath("//XCUIElementTypeTextField[@value]");
-        WebElement weightInput = driver.findElement(weightInputLocator);
-
-
-        click(By.xpath("//XCUIElementTypeKey[@name='Delete']"));
-        click(By.xpath("//XCUIElementTypeKey[@name='Delete']"));
-        click(By.xpath("//XCUIElementTypeKey[@name='Delete']"));
-
-        List<WebElement> digitKeys = driver.findElements(By.xpath("//XCUIElementTypeKey[not(contains(@name, 'Delete')) and not(contains(@name, ','))]"));
-
-        // Перемешать список
+        click(deleteBtn);
+        click(deleteBtn);
+        click(deleteBtn);
+        List<WebElement> digitKeys = getElements(keys);
         Collections.shuffle(digitKeys);
 
         // Нажать на первые три
@@ -289,59 +248,33 @@ public class ProfilePage extends BasePage {
             digitKeys.get(i).click();
         }
 
-        // Нажимаем на переключатель
-        By switchToggle = By.xpath("(//XCUIElementTypeSwitch[@value])[2]");
         click(switchToggle);
-
-        // Закрываем окно
-        By doneButton = By.xpath("//XCUIElementTypeButton[@name=\"DONE\"]");
         click(doneButton);
     }
 
+    @Step("Add profile photo")
     public void addPhoto() {
 
         if (getElementsAmount(deletePhotoBnt) > 0) {
             click(deletePhotoBnt);
-            waitElement(By.xpath("//XCUIElementTypeImage[@name=\"imagePlaceholder\"]"));
         }
 
         click(addPhotoBnt);
-        By photoLibraryBtn = By.xpath("//XCUIElementTypeButton[@name=\"Photo Library\"]");
         click(photoLibraryBtn);
-        By choosePhoto = By.xpath("//XCUIElementTypeImage[@name=\"PXGGridLayout-Info\" and @label=\"Фотография, 31 марта 2018 г., 02:14\"]");
         click(choosePhoto);
-        By chooseBnt = By.xpath("//XCUIElementTypeButton[@name=\"Done\"]");
         click(chooseBnt);
         try {
-            Thread.sleep(3000); // Пауза на 3 секунды
+            Thread.sleep(3000);
         } catch (InterruptedException e) {
-            e.printStackTrace(); // Обработка исключения, если поток был прерван
+            e.printStackTrace();
         }
     }
 
-    // Генерация случайной строки
-    public String generateRandomString(int length) {
-        String chars = "0123456789";
-//      ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz
-        Random random = new Random();
-        StringBuilder randomString = new StringBuilder(length);
-
-        for (int i = 0; i < length; i++) {
-            int randomIndex = random.nextInt(chars.length());
-            randomString.append(chars.charAt(randomIndex));
-        }
-
-        return randomString.toString();
-    }
-
+    @Step("Edit 'About me' section")
     public void aboutMe() {
-
-        By textInputLocator = By.xpath("//XCUIElementTypeTextView[@value]");
         WebElement textInput = driver.findElement(textInputLocator);
-
         textInput.clear();
-
-        String randomString = generateRandomString(15);
+        String randomString = TestData.getRandomNumber(15);
 
         setText(aboutMeField, randomString);
         textInput.click();
@@ -349,89 +282,49 @@ public class ProfilePage extends BasePage {
 
     public void waitASecond() {
         try {
-            Thread.sleep(3000); // Пауза на 3 секунды
+            Thread.sleep(3000);
         } catch (InterruptedException e) {
-            e.printStackTrace(); // Обработка исключения, если поток был прерван
+            e.printStackTrace();
         }
     }
 
+    @Step("Change phone number")
     public void changePhone () {
         click(phoneCodeField);
-
-        By codeOptions = By.xpath("//XCUIElementTypeCollectionView/XCUIElementTypeCell");
-        List<WebElement> codeElement = driver.findElements(codeOptions);
+        List<WebElement> codeElement = getElements(codeOptions);
 
         if (codeElement.size() <= 1) {
             throw new IllegalStateException("Нет элементов для выбора");
         }
         int randomIndex = new Random().nextInt(codeElement.size());
         WebElement randomCodeElement = codeElement.get(randomIndex);
-        String codeText = randomCodeElement.getText();
-
         randomCodeElement.click();
-        System.out.println("Выбран пол: " + codeText);
-
         click(phoneField);
-
-        By phoneInputLocator = By.xpath("(//XCUIElementTypeTextField[@value])[1]");
         WebElement phoneInput = driver.findElement(phoneInputLocator);
-
         phoneInput.clear();
-
-        String randomString = generateRandomString(10);
-
+        String randomString = TestData.getRandomNumber(7);
         phoneInput.sendKeys(randomString);
-
     }
 
-    public static String generateRandomEmail() {
-        String characters = "abcdefghijklmnopqrstuvwxyz0123456789";
-        StringBuilder sb = new StringBuilder();
-        Random random = new Random();
-
-        // Генерация случайной строки для имени пользователя
-        for (int i = 0; i < 10; i++) {
-            sb.append(characters.charAt(random.nextInt(characters.length())));
-        }
-
-        String userName = sb.toString(); // имя пользователя
-
-        // Генерация случайного домена
-        String[] domains = {"gmail.com", "yahoo.com", "outlook.com", "mail.com"};
-        String domain = domains[random.nextInt(domains.length)];
-
-        return userName + "@" + domain;
-    }
-
+    @Step("Edit email")
     public void emailEdit () {
         click(emailField);
-
-        By emailInputLocator = By.xpath("(//XCUIElementTypeTextField[@value])[2]");
         WebElement emailInput = driver.findElement(emailInputLocator);
-
         emailInput.clear();
-
-        String randomEmail = generateRandomEmail();
-        System.out.println("Сгенерированный email: " + randomEmail);
-
+        String randomEmail = TestData.generateRandomEmail();
         emailInput.sendKeys(randomEmail);
-
     }
 
+    @Step("Edit country")
     public void countryEdit() {
         click(countryField);
-        By countryOptions = By.xpath("//XCUIElementTypeCollectionView/XCUIElementTypeCell");
-        List<WebElement> countryElement = driver.findElements(countryOptions);
+        List<WebElement> countryElement = getElements(countryOptions);
 
         if (countryElement.size() <= 1) {
             throw new IllegalStateException("Нет элементов для выбора");
         }
         int randomIndex = new Random().nextInt(countryElement.size());
         WebElement randomCountryElement = countryElement.get(randomIndex);
-        String countryText = randomCountryElement.getText();
-
         randomCountryElement.click();
-        System.out.println("Выбрана страна: " + countryText);
     }
 }
-

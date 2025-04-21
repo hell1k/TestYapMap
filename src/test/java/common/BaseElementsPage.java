@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 import static common.BasePage.driver;
@@ -87,5 +88,13 @@ public class BaseElementsPage {
                 .addAction(finger1.createPointerMove(Duration.ofMillis(100), PointerInput.Origin.viewport(), endX, endY))
                 .addAction(finger1.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
         driver.perform(Collections.singleton(sequence));
+    }
+
+    public WebElement getElement(By locator) {
+        return driver.findElement(locator);
+    }
+
+    public List<WebElement> getElements(By locator) {
+        return driver.findElements(locator);
     }
 }
