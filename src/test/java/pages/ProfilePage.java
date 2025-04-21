@@ -76,17 +76,17 @@ public class ProfilePage extends BasePage {
 
     @Step("Click on Business section")
     public void clickBusiness() {
-        click(business);
+        click(business, "нажатие на кнопку Бизнес");
     }
 
     @Step("Click on Events section")
     public void clickEvents() {
-        click(events);
+        click(events, "нажатие на кнопку События");
     }
 
     @Step("Click on Groups section")
     public void clickGroups() {
-        click(groups);
+        click(groups, "нажатие на кнопку Группы");
     }
 
     public String getFullName() {
@@ -95,7 +95,7 @@ public class ProfilePage extends BasePage {
 
     @Step("Open Profile Editor")
     public void openProfileEditor() {
-        click(editProfileBtn);
+        click(editProfileBtn, "нажатие на кнопку Редактировать профиль");
     }
 
     @Step("Fill First Name")
@@ -128,8 +128,8 @@ public class ProfilePage extends BasePage {
         clearAndSendKeys(firstNameField, firstName);
         clearAndSendKeys(lastNameField, lastName);
         clearAndSendKeys(nicknameField, nickname);
-        click(backBtn);
-        click(yesButton);
+        click(backBtn, "нажатие на кнопку Назад");
+        click(yesButton, "нажатие на кнопку Да");
         waitElement(By.xpath("//XCUIElementTypeStaticText[@name='" + fullNameStr + "']"));
         waitElement(By.xpath("//XCUIElementTypeButton[contains(@name,@" + nickname + ")]"));
     }
@@ -144,8 +144,8 @@ public class ProfilePage extends BasePage {
 
     @Step("Undo Profile")
     public void undoProfileChanges() {
-        click(backBtn);
-        click(noButton);
+        click(backBtn, "нажатие на кнопку Назад");
+        click(noButton, "нажатие на кнопку Нет");
     }
 
     @Step("Edit full profile information")
@@ -163,20 +163,20 @@ public class ProfilePage extends BasePage {
 //        changePhone();
         emailEdit();
         countryEdit();
-        click(backBtn);
-        click(yesButton);
+        click(backBtn, "нажатие на кнопку Назад");
+        click(yesButton, "нажатие на кнопку Да");
         waitASecond();
     }
 
     @Step("Click on Edit Profile button")
     public void clickEditProfile() {
-        click(editProfileBtn);
+        click(editProfileBtn, "нажатие на кнопку Редактировать профиль");
     }
 
     @Step("Edit birth date")
     public void editDate() {
-        click(editProfileBtn);
-        click(dataField);
+        click(editProfileBtn, "нажатие на кнопку Редактировать профиль");
+        click(dataField, "нажатие на кнопку Дата");
         List<WebElement> yearElements = getElements(yearField);
 
         if (yearElements.isEmpty()) {
@@ -201,12 +201,12 @@ public class ProfilePage extends BasePage {
         int randomDayIndex = new Random().nextInt(dayElements.size());
         WebElement randomDayElement = dayElements.get(randomDayIndex);
         randomDayElement.click();
-        click(yearFieldDoneBtn);
+        click(yearFieldDoneBtn, "нажатие на кнопку Готово");
     }
 
     @Step("Edit relationship status")
     public void editStatus() {
-        click(statusField);
+        click(statusField, "нажатие на кнопку Статус");
         By statusOptions = By.xpath("//XCUIElementTypeStaticText[@name]");
         List<WebElement> statusElement = driver.findElements(statusOptions);
 
@@ -222,7 +222,7 @@ public class ProfilePage extends BasePage {
 
     @Step("Edit gender")
     public void editGender() {
-        click(genderField);
+        click(genderField, "нажатие на кнопку Пол");
         List<WebElement> genderElement = getElements(genderOptions);
 
         if (genderElement.size() <= 1) {
@@ -235,7 +235,7 @@ public class ProfilePage extends BasePage {
 
     @Step("Edit religion")
     public void editReligion() {
-        click(religionField);
+        click(religionField, "нажатие на кнопку Религия");
         List<WebElement> religionElement = getElements(religionOptions);
 
         if (religionElement.size() <= 1) {
@@ -248,7 +248,7 @@ public class ProfilePage extends BasePage {
 
     @Step("Edit ethnic")
     public void editEthnic() {
-        click(ethnicField);
+        click(ethnicField, "нажатие на кнопку Расса");
         List<WebElement> ethnicElement = getElements(ethnicOptions);
 
         if (ethnicElement.size() <= 1) {
@@ -262,26 +262,26 @@ public class ProfilePage extends BasePage {
     @Step("Edit height")
     public void editHeight() {
         swipeUp();
-        click(heightField);
-        click(deleteBtn);
-        click(deleteBtn);
-        click(deleteBtn);
+        click(heightField, "нажатие на кнопку Рост");
+        click(deleteBtn, "нажатие на кнопку Стереть");
+        click(deleteBtn, "нажатие на кнопку Стереть");
+        click(deleteBtn, "нажатие на кнопку Стереть");
         List<WebElement> digitKeys = getElements(keys);
         Collections.shuffle(digitKeys);
 
         for (int i = 0; i < 3 && i < digitKeys.size(); i++) {
             digitKeys.get(i).click();
         }
-        click(switchToggle);
-        click(doneButton);
+        click(switchToggle, "надатие на Переключатель");
+        click(doneButton, "нажатие на кнопку Готово");
     }
 
     @Step("Edit weight")
     public void editWeight() {
-        click(weightField);
-        click(deleteBtn);
-        click(deleteBtn);
-        click(deleteBtn);
+        click(weightField, "нажатие на кнопку Вес");
+        click(deleteBtn, "нажатие на кнопку стереть");
+        click(deleteBtn, "нажатие на кнопку Стереть");
+        click(deleteBtn, "нажатие на кнопку Стереть");
         List<WebElement> digitKeys = getElements(keys);
         Collections.shuffle(digitKeys);
 
@@ -289,27 +289,26 @@ public class ProfilePage extends BasePage {
         for (int i = 0; i < 2 && i < digitKeys.size(); i++) {
             digitKeys.get(i).click();
         }
-
-        click(switchToggle);
-        click(doneButton);
+        click(switchToggle, "нажатие Переключатель");
+        click(doneButton, "нажатие на кнопку Готово");
     }
 
     @Step("Add profile photo")
     public void addPhoto() throws InterruptedException {
         if (getElementsAmount(deletePhotoBnt) > 0) {
-            click(deletePhotoBnt);
+            click(deletePhotoBnt, "нажатие на кнопку Удалить фото");
         }
 
-        click(addPhotoBnt);
-        click(photoLibraryBtn);
-        click(choosePhoto);
-        click(chooseBnt);
+        click(addPhotoBnt, "нажатие на кнопку Добавить фото");
+        click(photoLibraryBtn, "нажатие на кнопку Библиотека");
+        click(choosePhoto, "нажатие на кнопку Выбрать фото");
+        click(chooseBnt, "нажатие на кнопку Подтвердить выбор");
         wait(3);
     }
 
     @Step("Edit 'About me' section")
     public void aboutMe() {
-        WebElement textInput = driver.findElement(textInputLocator);
+        WebElement textInput = getElement(textInputLocator);
         textInput.clear();
         String randomString = TestData.getRandomNumber(15);
         setText(aboutMeField, randomString);
@@ -344,7 +343,7 @@ public class ProfilePage extends BasePage {
 
     @Step("Edit email")
     public void emailEdit() {
-        click(emailField);
+        click(emailField, "нажатие на кнопку Email");
         WebElement emailInput = getElement(emailInputLocator);
         emailInput.clear();
         emailInput.sendKeys(TestData.generateRandomEmail());
@@ -352,7 +351,7 @@ public class ProfilePage extends BasePage {
 
     @Step("Edit country")
     public void countryEdit() {
-        click(countryField);
+        click(countryField, "нажатие на кнопку Страна");
         List<WebElement> countryElement = getElements(countryOptions);
 
         if (countryElement.size() <= 1) {
