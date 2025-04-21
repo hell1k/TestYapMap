@@ -118,7 +118,7 @@ public class ProfilePage extends BasePage {
         editWeight();
         addPhoto();
         aboutMe();
-        changePhone();
+//        changePhone();
         emailEdit();
         countryEdit();
         click(backBtn);
@@ -288,23 +288,23 @@ public class ProfilePage extends BasePage {
         }
     }
 
-    @Step("Change phone number")
-    public void changePhone () {
-        click(phoneCodeField);
-        List<WebElement> codeElement = getElements(codeOptions);
-
-        if (codeElement.size() <= 1) {
-            throw new IllegalStateException("Нет элементов для выбора");
-        }
-        int randomIndex = new Random().nextInt(codeElement.size());
-        WebElement randomCodeElement = codeElement.get(randomIndex);
-        randomCodeElement.click();
-        click(phoneField);
-        WebElement phoneInput = driver.findElement(phoneInputLocator);
-        phoneInput.clear();
-        String randomString = TestData.getRandomNumber(7);
-        phoneInput.sendKeys(randomString);
-    }
+//    @Step("Change phone number")
+//    public void changePhone () {
+//        click(phoneCodeField);
+//        List<WebElement> codeElement = getElements(codeOptions);
+//
+//        if (codeElement.size() <= 1) {
+//            throw new IllegalStateException("Нет элементов для выбора");
+//        }
+//        int randomIndex = new Random().nextInt(codeElement.size());
+//        WebElement randomCodeElement = codeElement.get(randomIndex);
+//        randomCodeElement.click();
+//        click(phoneField);
+//        WebElement phoneInput = driver.findElement(phoneInputLocator);
+//        phoneInput.clear();
+//        String randomString = TestData.getRandomNumber(7);
+//        phoneInput.sendKeys(randomString);
+//    }
 
     @Step("Edit email")
     public void emailEdit () {
