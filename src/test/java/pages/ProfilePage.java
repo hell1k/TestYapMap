@@ -25,7 +25,7 @@ public class ProfilePage extends BasePage {
     By nicknameField = By.xpath("(//XCUIElementTypeTextField)[3]");
     //By profileFullName = By.xpath("(//XCUIElementTypeCell/XCUIElementTypeButton[contains(@name, 'years')]/preceding-sibling::XCUIElementTypeStaticText[@name]");
     By profileFullName = By.xpath("((//XCUIElementTypeStaticText[@name])[2])");
-    By backBtn = By.name("ic ic back");
+    By backBtn = By.xpath("//XCUIElementTypeButton[@name='ic ic back' or @name='Back']");
     By yesButton = By.name("Yes");
     By dataField = By.xpath("(//XCUIElementTypeTextField[@value])[4]");
     By religionField = By.xpath("//XCUIElementTypeWindow/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeCollectionView/XCUIElementTypeCell[1]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[10]");
