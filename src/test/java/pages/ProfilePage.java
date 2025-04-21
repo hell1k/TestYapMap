@@ -151,7 +151,6 @@ public class ProfilePage extends BasePage {
     @Step("Edit full profile information")
     public void editProfile() throws InterruptedException {
         clickEditProfile();
-        editProfileName();
         editDate();
         editStatus();
         editGender();
