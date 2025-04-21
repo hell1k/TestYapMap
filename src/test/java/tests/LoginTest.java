@@ -26,9 +26,14 @@ public class LoginTest extends BasePage {
     public void undoProfile() {
         profile.openProfile();
         String nameBefore = profile.getFullName();
+        String nicknameBefore = profile.getNickname();
         profile.openProfileEditor();
+        profile.fillFirstName();
+        profile.fillLastName();
+        profile.fillNickname();
         profile.undoProfileChanges();
         assert profile.getFullName().equals(nameBefore) : "Старое и новое имена не совпадают";
+        assert profile.getNickname().equals(nicknameBefore) : "Старый и новый ники не совпадают";
     }
 
     @Test(description = "Проверка элеменов профиля")

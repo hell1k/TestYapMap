@@ -66,7 +66,7 @@ public class ProfilePage extends BasePage {
     By okButton = By.name("Ok");
     By closeButton = By.name("close icon");
     By reportBug = By.xpath("//XCUIElementTypeStaticText[@name='Report a Bug']");
-
+    By profileNickname = By.xpath("//XCUIElementTypeCell/XCUIElementTypeButton[contains(@label, 'years')]");
 
     @Step("Open profile")
     public void openProfile() {
@@ -390,5 +390,9 @@ public class ProfilePage extends BasePage {
         }
         click(reportBug, "пункт Report a Bug");
         click(okButton, "кнопка Ок");
+    }
+
+    public String getNickname() {
+        return getText(profileNickname).split(" ")[0]; // Текст до пробела = никнейм
     }
 }
