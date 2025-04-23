@@ -12,6 +12,10 @@ public class TestData {
         return "John" + random.nextInt(10000);
     }
 
+    public static int getRandomName() {
+        return random.nextInt(10000);
+    }
+
     public static String getLastName() {
         return "Doe" + random.nextInt(10000);
     }
@@ -26,22 +30,5 @@ public class TestData {
             digits.append(random.nextInt(10)); // генерирует от 0 до 9
         }
         return digits.toString();
-    }
-    public static String generateRandomEmail() {
-        String characters = "abcdefghijklmnopqrstuvwxyz0123456789";
-        StringBuilder sb = new StringBuilder();
-        Random random = new Random();
-
-        for (int i = 0; i < 10; i++) {
-            sb.append(characters.charAt(random.nextInt(characters.length())));
-        }
-
-        String userName = sb.toString();
-
-        // Генерация случайного домена
-        String[] domains = {"gmail.com", "yahoo.com", "outlook.com", "mail.com"};
-        String domain = domains[random.nextInt(domains.length)];
-
-        return userName + "@" + domain;
     }
 }

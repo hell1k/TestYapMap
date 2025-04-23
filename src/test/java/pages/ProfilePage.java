@@ -35,7 +35,7 @@ public class ProfilePage extends BasePage {
     By heightField = By.xpath("//XCUIElementTypeWindow/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeCollectionView/XCUIElementTypeCell[1]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[12]");
     By weightField = By.xpath("//XCUIElementTypeWindow/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeCollectionView/XCUIElementTypeCell[1]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[13]");
     By aboutMeField = By.xpath("//XCUIElementTypeTextView");
-    By addPhotoBnt = By.xpath("//XCUIElementTypeButton[@name=\"Add Photo\"]");
+    By addPhotoBnt = By.xpath("//XCUIElementTypeButton[@name='Add Photo']");
     By deletePhotoBnt = By.xpath("//XCUIElementTypeButton[@name=\"icDeleteWhite\"]");
     By phoneCodeField = By.xpath("//XCUIElementTypeStaticText[contains(@name, '+')]");
     By phoneField = By.xpath("(//XCUIElementTypeTextField[@value])[1]");
@@ -134,14 +134,6 @@ public class ProfilePage extends BasePage {
         waitElement(By.xpath("//XCUIElementTypeButton[contains(@name,@" + nickname + ")]"));
     }
 
-    @Step("Clear field and send keys")
-    private void clearAndSendKeys(By element, String text) {
-        WebElement el = getElement(element);
-        el.click();
-        el.clear();
-        el.sendKeys(text);
-    }
-
     @Step("Undo Profile")
     public void undoProfileChanges() {
         click(backBtn, "нажатие на кнопку Назад");
@@ -150,7 +142,7 @@ public class ProfilePage extends BasePage {
 
     @Step("Edit full profile information")
     public void editProfile() throws InterruptedException {
-        clickEditProfile();
+//        clickEditProfile();
         editDate();
         editStatus();
         editGender();
@@ -346,7 +338,7 @@ public class ProfilePage extends BasePage {
         click(emailField, "нажатие на кнопку Email");
         WebElement emailInput = getElement(emailInputLocator);
         emailInput.clear();
-        emailInput.sendKeys(TestData.generateRandomEmail());
+        emailInput.sendKeys(generateRandomEmail());
     }
 
     @Step("Edit country")

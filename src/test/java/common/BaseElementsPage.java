@@ -36,6 +36,39 @@ public class BaseElementsPage {
         int time = second * 1000;
         Thread.sleep((int) time);
     }
+    @Step("Clear field and send keys")
+    public void clearAndSendKeys(By element, String text) {
+        WebElement el = getElement(element);
+        el.click();
+        el.clear();
+        el.sendKeys(text);
+    }
+
+    public static String getRandomText(int length) {
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        StringBuilder result = new StringBuilder();
+        Random random = new Random();
+
+        for (int i = 0; i < length; i++) {
+            int index = random.nextInt(characters.length());
+            result.append(characters.charAt(index));
+        }
+
+        return result.toString();
+    }
+
+    public static String getRandomSite(int length) {
+        String characters = "abcdefghijklmnopqrstuvwxyz";
+        StringBuilder result = new StringBuilder();
+        Random random = new Random();
+
+        for (int i = 0; i < length; i++) {
+            int index = random.nextInt(characters.length());
+            result.append(characters.charAt(index));
+        }
+
+        return result.toString() + ".com";
+    }
 
     @Step("Ожидание элемента")
     public void waitElement(By locator) {
@@ -122,12 +155,53 @@ public class BaseElementsPage {
         driver.perform(Collections.singleton(sequence));
     }
 
+    public void swipeToDeleteElement(WebElement element) {
+        // Получаем координаты и размеры элемента
+        Point location = element.getLocation();
+        Dimension size = element.getSize();
+
+        int startY = location.getY() + size.getHeight() / 2;
+
+        // Начинаем свайп с правого края элемента и ведем влево
+        int startX = location.getX() + (int)(size.getWidth() * 0.9);
+        int endX = location.getX() + (int)(size.getWidth() * 0.1);
+        int endY = startY;
+
+        PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger");
+        Sequence swipe = new Sequence(finger, 1)
+                .addAction(finger.createPointerMove(Duration.ZERO, PointerInput.Origin.viewport(), startX, startY))
+                .addAction(finger.createPointerDown(PointerInput.MouseButton.LEFT.asArg()))
+                .addAction(new Pause(finger, Duration.ofMillis(200)))
+                .addAction(finger.createPointerMove(Duration.ofMillis(300), PointerInput.Origin.viewport(), endX, endY))
+                .addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
+
+        driver.perform(Collections.singletonList(swipe));
+    }
+
     public WebElement getElement(By locator) {
         return driver.findElement(locator);
     }
 
     public List<WebElement> getElements(By locator) {
         return driver.findElements(locator);
+    }
+
+    public static String generateRandomEmail() {
+        String characters = "abcdefghijklmnopqrstuvwxyz0123456789";
+        StringBuilder sb = new StringBuilder();
+        Random random = new Random();
+
+        for (int i = 0; i < 10; i++) {
+            sb.append(characters.charAt(random.nextInt(characters.length())));
+        }
+
+        String userName = sb.toString();
+
+        // Генерация случайного домена
+        String[] domains = {"gmail.com", "yahoo.com", "outlook.com", "mail.com"};
+        String domain = domains[random.nextInt(domains.length)];
+
+        return userName + "@" + domain;
     }
 }
 
