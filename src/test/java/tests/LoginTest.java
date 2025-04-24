@@ -44,7 +44,7 @@ public class LoginTest extends BasePage {
     }
 
     @Test(description = "Регистрация новового пользователя")
-    public void testRegistration() {
+    public void testRegistration() throws InterruptedException {
         profile.logout();
         auth.registration();
     }
