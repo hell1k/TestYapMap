@@ -30,7 +30,7 @@ public class BasePage extends BaseElementsPage {
         capabilities.setCapability("appium:automationName", "XCUITest");
 //        capabilities.setCapability("appium:id", "BD9D4A92-2713-45AE-89EB-E01673F6E5CF");
         capabilities.setCapability("appium:deviceName", "iPhone 16 Pro");
-        capabilities.setCapability("appium:app", "/Users/qasquad/IdeaProjects/TestYapMap/Relagram.app");
+        capabilities.setCapability("appium:app", "/Users/el_erizo/Downloads/Relagram.app");
         capabilities.setCapability("appium:showXcodeLog", true);
         capabilities.setCapability("appium:usePrebuiltWDA", true);
         capabilities.setCapability("appium:derivedDataPath", "/tmp/wda");

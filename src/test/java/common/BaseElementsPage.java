@@ -129,5 +129,14 @@ public class BaseElementsPage {
     public List<WebElement> getElements(By locator) {
         return driver.findElements(locator);
     }
+
+    public By button(String name) {
+        return By.xpath("//XCUIElementTypeButton[@name='" + name + "']");
+    }
+
+    @Step("Клик по кнопке '{name}'")
+    public void clickButton(String name) {
+        click(button(name));
+    }
 }
 

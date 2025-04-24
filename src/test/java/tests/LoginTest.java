@@ -42,4 +42,10 @@ public class LoginTest extends BasePage {
         profile.openProfile();
         profile.checkProfileElements();
     }
+
+    @Test(description = "Регистрация новового пользователя")
+    public void testRegistration() {
+        profile.logout();
+        auth.registration();
+    }
 }
