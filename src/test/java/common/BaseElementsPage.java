@@ -53,6 +53,16 @@ public class BaseElementsPage {
         getElement(locator).click();
     }
 
+    @Step("Клик по элементу")
+    public void click(WebElement element) {
+        element.click();
+    }
+
+    @Step("Клик по элементу {string}")
+    public void click(WebElement element, String string) {
+        element.click();
+    }
+
     @Step("Клик по элементу {string}")
     public void click(By locator, String string) {
         wait.until(ExpectedConditions.elementToBeClickable(locator));
@@ -155,6 +165,11 @@ public class BaseElementsPage {
 
     public String getNumberFromElement(By locator) {
         return getText(locator).replaceAll("\\D+", "");
+    }
+
+    @Step("Select random value")
+    public void clickRandomElement(By locator) {
+        getElements(locator).get(getRandomNumber(getElementsAmount(locator))).click();
     }
 }
 

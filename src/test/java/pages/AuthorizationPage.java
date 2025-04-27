@@ -37,8 +37,10 @@ public class AuthorizationPage extends BasePage {
     By religionGroup = By.xpath("//XCUIElementTypeTextField[@value=\"Religion group\"]");
     By race = By.xpath("//XCUIElementTypeTextField[@value=\"Ethnic/Race Information\"]");
     By height = By.xpath("//XCUIElementTypeTextField[@value=\"Height\"]");
+    By heightWeightField = By.xpath("//XCUIElementTypeTextField[@value=\"Enter\"]");
     By weight = By.xpath("//XCUIElementTypeTextField[@value=\"Weight\"]");
     By phone = By.xpath("(//XCUIElementTypeTextField)[2]");
+    By profileDataValues = By.xpath("//XCUIElementTypeCell//XCUIElementTypeStaticText[@value]");
 
     @Step("Авторизация")
     public void authorization() throws InterruptedException {
@@ -84,7 +86,22 @@ public class AuthorizationPage extends BasePage {
         click(maleBtn, "Male");
         clickButton("CONTINUE");
         //step3
-        clickButton("Skip");
+//        clickButton("Skip");
+        click(status, "Status");
+        clickRandomElement(profileDataValues);
+        click(sexualOrientation, "Sexual orientation");
+        clickRandomElement(profileDataValues);
+        click(religionGroup, "Re");
+        clickRandomElement(profileDataValues);
+        click(race, "Ethnic/Race");
+        clickRandomElement(profileDataValues);
+        click(height, "Height");
+        setText(heightWeightField, String.valueOf(getRandomNumber(120, 200)));
+        click(elementName("DONE"), "кнопка Done");
+        click(weight, "Weight");
+        setText(heightWeightField, String.valueOf(getRandomNumber(50, 100)));
+        click(elementName("DONE"), "кнопка Done");
+        clickButton("CONTINUE");
         //step4
         setText(phone, "9" + getRandomNumber(900000000, 999999999), "Phone");
         clickButton("SIGN UP");
