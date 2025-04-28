@@ -38,7 +38,7 @@ public class LoginTest extends BasePage {
 
     @Test(description = "Проверка элеменов профиля")
     @Description("Проверка элементов профиля")
-    public void profileCheck() {
+    public void profileCheck() throws InterruptedException {
         profile.openProfile();
         profile.checkProfileElements();
     }

@@ -167,7 +167,6 @@ public class ProfilePage extends BasePage {
 
     @Step("Edit birth date")
     public void editDate() {
-        click(editProfileBtn, "нажатие на кнопку Редактировать профиль");
         click(dataField, "нажатие на кнопку Дата");
         List<WebElement> yearElements = getElements(yearField);
 
@@ -354,14 +353,15 @@ public class ProfilePage extends BasePage {
         randomCountryElement.click();
     }
 
-    public void checkProfileElements() {
+    public void checkProfileElements() throws InterruptedException {
         List<String> elements = Arrays.asList("Favorites", "Groups", "Events", "Businesses", "My Social networks", "Channels", "Dating",
                 "Market", "Pets", "Jobs", "Service finder", "Places to Visit", "Purchase history", "Pending requests",
                 "Blacklist", "Settings", "Help");
 
         for (String element : elements) {
             By elementLocator = By.xpath("//XCUIElementTypeStaticText[@name='" + element + "']");
-            if (element == "Businesses" || element == "Service finder") {swipeUp();}
+            if (element == "Jobs" || element == "Settings") {swipeUp();}
+            wait(1);
             click(elementLocator, element);
             click(backBtn, "кнопка Назад");
             waitClickableElement(elementLocator);
