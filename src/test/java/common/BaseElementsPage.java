@@ -93,10 +93,20 @@ public class BaseElementsPage {
         getElement(locator).click();
     }
 
+    @Step("Клик по элементу")
+    public void click(WebElement element) {
+        element.click();
+    }
+
+    @Step("Клик по элементу {string}")
+    public void click(WebElement element, String string) {
+        element.click();
+    }
+
     @Step("Клик по элементу {string}")
     public void click(By locator, String string) {
         wait.until(ExpectedConditions.elementToBeClickable(locator));
-        driver.findElement(locator).click();
+        getElement(locator).click();
     }
 
     public int getElementsAmount(By locator) {
@@ -110,7 +120,7 @@ public class BaseElementsPage {
 
     @Step("Заполнение поля {fieldName} текстом {string}")
     public void setText(By xpath, String string, String fieldName) {
-        driver.findElement(xpath).sendKeys(string);
+        getElement(xpath).sendKeys(string);
     }
 
     public String getText(By locator) {
@@ -124,6 +134,11 @@ public class BaseElementsPage {
     public int getRandomNumber(int number) {
         Random random = new Random();
         return random.nextInt(number);
+    }
+
+    public int getRandomNumber(int min, int max) {
+        Random random = new Random();
+        return random.nextInt(max - min + 1) + min;
     }
 
     public By elementName(String name) {
@@ -197,6 +212,28 @@ public class BaseElementsPage {
 
     public List<WebElement> getElements(By locator) {
         return driver.findElements(locator);
+    }
+
+    public By button(String name) {
+        return By.xpath("//XCUIElementTypeButton[@name='" + name + "']");
+    }
+
+    @Step("Клик по кнопке '{name}'")
+    public void clickButton(String name) {
+        click(button(name));
+    }
+
+    public String getNumberFromSting(String string) {
+        return string.replaceAll("\\D+", "");
+    }
+
+    public String getNumberFromElement(By locator) {
+        return getText(locator).replaceAll("\\D+", "");
+    }
+
+    @Step("Select random value")
+    public void clickRandomElement(By locator) {
+        getElements(locator).get(getRandomNumber(getElementsAmount(locator))).click();
     }
 
     public static String generateRandomEmail() {

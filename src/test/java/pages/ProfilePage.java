@@ -65,6 +65,7 @@ public class ProfilePage extends BasePage {
     By reportBug = By.xpath("//XCUIElementTypeStaticText[@name='Report a Bug']");
     By profileNickname = By.xpath("//XCUIElementTypeCell/XCUIElementTypeButton[contains(@label, 'years')]");
     By alert = By.xpath("//XCUIElementTypeAlert/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeScrollView[1]/XCUIElementTypeOther[1]");
+    By logoutBtn = By.xpath("//XCUIElementTypeStaticText[@name=\"Log Out\"]");
 
     @Step("Open profile")
     public void openProfile() {
@@ -141,7 +142,7 @@ public class ProfilePage extends BasePage {
 
     @Step("Edit full profile information")
     public void editProfile() throws InterruptedException {
-//        clickEditProfile();
+        clickEditProfile();
         editDate();
         editStatus();
         editGender();
@@ -380,5 +381,15 @@ public class ProfilePage extends BasePage {
 
     public String getNickname() {
         return getText(profileNickname).split(" ")[0]; // Текст до пробела = никнейм
+    }
+
+    @Step("Log Out")
+    public void logout() {
+        openProfile();
+        swipeUp();
+        swipeUp();
+        swipeUp();
+        click(logoutBtn, "Log Out");
+        waitElement(button("SIGN IN"));
     }
 }
