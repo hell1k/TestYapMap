@@ -7,10 +7,7 @@ import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class ProfilePage extends BasePage {
     Menu menu = new Menu();
@@ -67,9 +64,11 @@ public class ProfilePage extends BasePage {
     By closeButton = By.name("close icon");
     By reportBug = By.xpath("//XCUIElementTypeStaticText[@name='Report a Bug']");
     By profileNickname = By.xpath("//XCUIElementTypeCell/XCUIElementTypeButton[contains(@label, 'years')]");
+    By alert = By.xpath("//XCUIElementTypeAlert/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeScrollView[1]/XCUIElementTypeOther[1]");
 
     @Step("Open profile")
     public void openProfile() {
+        closeNotification(alert);
         menu.clickProfile();
         waitElement(favorites);
     }
@@ -300,7 +299,7 @@ public class ProfilePage extends BasePage {
 
     @Step("Edit 'About me' section")
     public void aboutMe() {
-        WebElement textInput = getElement(textInputLocator);
+        WebElement textInput = getElement(aboutMeField);
         textInput.clear();
         String randomString = TestData.getRandomNumber(15);
         setText(aboutMeField, randomString);
@@ -361,6 +360,7 @@ public class ProfilePage extends BasePage {
 
         for (String element : elements) {
             By elementLocator = By.xpath("//XCUIElementTypeStaticText[@name='" + element + "']");
+            if (element == "Businesses" || element == "Service finder") {swipeUp();}
             click(elementLocator, element);
             click(backBtn, "кнопка Назад");
             waitClickableElement(elementLocator);
@@ -373,10 +373,6 @@ public class ProfilePage extends BasePage {
                 click(closeButton, "кнопка Закрыть");
                 click(doneButton, "кнопка Готово");
             }
-//            if (element.equals("About")) {
-//                click(elementLocator);
-//                swipeRight();
-//           }
         }
         click(reportBug, "пункт Report a Bug");
         click(okButton, "кнопка Ок");

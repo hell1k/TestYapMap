@@ -10,13 +10,13 @@ public class BusinessTest extends BasePage {
     @Test(description = "Business lifecycle")
     @Description("Business lifecycle")
     public void businessLifecycle() throws InterruptedException {
-//        profile.openProfile();
+        profile.openProfile();
 //        profile.swipeUp();
-//        business.openBusiness();
-//        business.addNewBusiness();
-//        business.addNewBusinessWithFullFields();
-//        business.editBusiness();
-//        business.share();
+        business.openBusiness();
+        business.addNewBusiness();
+        business.addNewBusinessWithFullFields();
+        business.editBusiness();
+        business.share(); 
         business.generateQrCode();
     }
 }

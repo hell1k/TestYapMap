@@ -44,6 +44,13 @@ public class BaseElementsPage {
         el.sendKeys(text);
     }
 
+    public void clearField(By element) {
+        WebElement el = getElement(element);
+        el.click();
+        el.clear();
+        el.clear();
+    }
+
     public static String getRandomText(int length) {
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         StringBuilder result = new StringBuilder();
@@ -139,6 +146,12 @@ public class BaseElementsPage {
         driver.perform(Collections.singleton(sequence));
     }
 
+    public void swipeToElement(By locator) {
+        if (getElementsAmount(locator) < 0) {
+            swipeUp();
+        }
+    }
+
     public void swipeRight() {
         Dimension size = driver.manage().window().getSize();
         int startX = 0;
@@ -202,6 +215,16 @@ public class BaseElementsPage {
         String domain = domains[random.nextInt(domains.length)];
 
         return userName + "@" + domain;
+    }
+
+    public void closeNotification(By element) {
+        try {
+            WebElement alertOkButton = driver.findElement(element);
+            if (alertOkButton.isDisplayed()) {
+                alertOkButton.click();
+            }
+        } catch (NoSuchElementException e) {
+        }
     }
 }
 
