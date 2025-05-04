@@ -21,6 +21,7 @@ import static common.BasePage.wait;
 
 public class BaseElementsPage {
     public TestData data = new TestData();
+    By backBtn = By.xpath("//XCUIElementTypeButton[@name='ic ic back' or @name='Back']");
 
     @Attachment(type = "image/png")
     public static byte[] getScreenshot(WebDriver driver) {
@@ -36,6 +37,11 @@ public class BaseElementsPage {
         int time = second * 1000;
         Thread.sleep((int) time);
     }
+
+    public void waitASecond() throws InterruptedException {
+        wait(1);
+    }
+
     @Step("Clear field and send keys")
     public void clearAndSendKeys(By element, String text) {
         WebElement el = getElement(element);
@@ -82,6 +88,11 @@ public class BaseElementsPage {
         wait.until(ExpectedConditions.presenceOfElementLocated(locator));
     }
 
+    @Step("Ожидание элемента '{string}'")
+    public void waitElement(By locator, String string) {
+        wait.until(ExpectedConditions.presenceOfElementLocated(locator));
+    }
+
     @Step("Ожидание элемента")
     public void waitClickableElement(By locator) {
         wait.until(ExpectedConditions.presenceOfElementLocated(locator));
@@ -91,6 +102,18 @@ public class BaseElementsPage {
     public void click(By locator) {
         waitClickableElement(locator);
         getElement(locator).click();
+    }
+
+    @Step("Клик по элементу")
+    public void click(String xpath) {
+        waitClickableElement(By.xpath(xpath));
+        getElement(By.xpath(xpath)).click();
+    }
+
+    @Step("Клик по элементу {string}")
+    public void click(String xpath, String string) {
+        waitClickableElement(By.xpath(xpath));
+        getElement(By.xpath(xpath)).click();
     }
 
     @Step("Клик по элементу")
@@ -127,8 +150,14 @@ public class BaseElementsPage {
         return getElement(locator).getText();
     }
 
+    @Step("Ожидание элемента '{name}'")
     public void waitElementName(String name) {
         waitElement(By.name(name));
+    }
+
+    @Step("Ожидание элемента содержащего '{name}'")
+    public void waitElementContainsName(String name) {
+        waitElement(By.xpath("//*[contains(@name, '" + name + "')]"));
     }
 
     public int getRandomNumber(int number) {
@@ -151,6 +180,22 @@ public class BaseElementsPage {
         int startY = size.getHeight() / 2;
         int endX = startX;
         int endY = (int) (size.getHeight() * 0.25);
+        PointerInput finger1 = new PointerInput(PointerInput.Kind.TOUCH, "finger1");
+        Sequence sequence = new Sequence(finger1, 1)
+                .addAction(finger1.createPointerMove(Duration.ZERO, PointerInput.Origin.viewport(), startX, startY))
+                .addAction(finger1.createPointerDown(PointerInput.MouseButton.LEFT.asArg()))
+                .addAction(new Pause(finger1, Duration.ofMillis(200)))
+                .addAction(finger1.createPointerMove(Duration.ofMillis(100), PointerInput.Origin.viewport(), endX, endY))
+                .addAction(finger1.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
+        driver.perform(Collections.singleton(sequence));
+    }
+
+    public void swipeDown() {
+        Dimension size = driver.manage().window().getSize();
+        int startX = size.getWidth() / 2;
+        int startY = size.getHeight() / 2;
+        int endX = startX;
+        int endY = (int) (size.getHeight() * 0.75);
         PointerInput finger1 = new PointerInput(PointerInput.Kind.TOUCH, "finger1");
         Sequence sequence = new Sequence(finger1, 1)
                 .addAction(finger1.createPointerMove(Duration.ZERO, PointerInput.Origin.viewport(), startX, startY))
@@ -191,8 +236,8 @@ public class BaseElementsPage {
         int startY = location.getY() + size.getHeight() / 2;
 
         // Начинаем свайп с правого края элемента и ведем влево
-        int startX = location.getX() + (int)(size.getWidth() * 0.9);
-        int endX = location.getX() + (int)(size.getWidth() * 0.1);
+        int startX = location.getX() + (int) (size.getWidth() * 0.9);
+        int endX = location.getX() + (int) (size.getWidth() * 0.1);
         int endY = startY;
 
         PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger");
@@ -262,6 +307,22 @@ public class BaseElementsPage {
             }
         } catch (NoSuchElementException e) {
         }
+    }
+
+    public void clickBack() {
+        if (getElements(backBtn).size() > 0) {
+            click(backBtn);
+        }
+    }
+
+    @Step("Проверка отсутствия элемента")
+    public void waitHiddenElement(By locator) {
+        wait.until(ExpectedConditions.invisibilityOfElementLocated(locator));
+    }
+
+    @Step("Проверка отсутствия элемента {string}")
+    public void waitHiddenElement(By locator, String string) {
+        wait.until(ExpectedConditions.invisibilityOfElementLocated(locator));
     }
 }
 

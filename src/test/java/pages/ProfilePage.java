@@ -388,7 +388,6 @@ public class ProfilePage extends BasePage {
         openProfile();
         swipeUp();
         swipeUp();
-        swipeUp();
         click(logoutBtn, "Log Out");
         waitElement(button("SIGN IN"));
     }

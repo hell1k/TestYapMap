@@ -54,6 +54,18 @@ public class AuthorizationPage extends BasePage {
         waitElement(profileIcon);
     }
 
+    @Step("Авторизация")
+    public void authorization(String login) throws InterruptedException {
+        if (getElementsAmount(signInButton) > 0) {
+            click(signInButton);
+            setText(loginField, login);
+            setText(passwordField, data.password);
+            click(signInButton2);
+        }
+
+        waitElement(profileIcon);
+    }
+
     @Step("Регистрация нового пользователя")
     public void registration() throws InterruptedException {
         clickButton("SIGN UP");

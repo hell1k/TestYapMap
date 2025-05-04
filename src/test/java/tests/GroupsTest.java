@@ -20,4 +20,47 @@ public class GroupsTest extends BasePage {
         profile.openProfile();
         groups.createPrivateGroup();
     }
+
+    @Test(description = "Взаимодействие с группой участником группы")
+    public void testGroupParticipant() throws InterruptedException {
+        profile.openProfile();
+        String groupName = groups.createGroup();
+        profile.logout();
+        auth.authorization(data.login2);
+        profile.openProfile();
+        profile.clickGroups();
+        groups.joinGroup(groupName);
+        clickBack();
+        waitElementName("Groups");
+        groups.leaveGroup(groupName);
+        groups.checkingJoinBtn(groupName);
+    }
+
+    @Test(description = "Проверка элементов группы при редактировании")
+    public void testCheckingGroupElementsWithEdit() throws InterruptedException {
+        profile.openProfile();
+        String groupName = groups.createGroup();
+        waitASecond();
+        groups.clickProfileGroup(groupName);
+        groups.clickEditGroup();
+        groups.checkingLimitFields(groupName);
+        swipeUp();
+        groups.addAdmin();
+        groups.addMembers();
+        clickButton("Save");
+        waitElementName("Ooops!");
+        waitElementName("Group name should have at least 3 characters, less than or equal 50 characters");
+    }
+
+    @Test(description = "Проверка элементов группы")
+    public void testCheckingGroupElements() throws InterruptedException {
+        profile.openProfile();
+        String groupName = groups.createGroup();
+        waitASecond();
+        groups.clickProfileGroup(groupName);
+        groups.checkingMenu();
+        swipeUp();
+        groups.checkingBlockedMembers();
+        groups.deleteGroup(groupName);
+    }
 }

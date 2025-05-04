@@ -1,5 +1,6 @@
 package common;
 
+import com.github.javafaker.Faker;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.ios.IOSDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -17,6 +18,7 @@ public class BasePage extends BaseElementsPage {
     public static AppiumDriver driver;
     public static WebDriverWait wait;
     public TestData data = new TestData();
+    public Faker faker = new Faker();
     public AuthorizationPage auth;
     public ProfilePage profile;
     public EventsPage events;
@@ -48,8 +50,8 @@ public class BasePage extends BaseElementsPage {
         profile = new ProfilePage();
         events = new EventsPage();
         groups = new GroupsPage();
-        auth.authorization();
         business = new BusinessPage();
+        auth.authorization();
     }
 
     @AfterMethod(alwaysRun = true)
