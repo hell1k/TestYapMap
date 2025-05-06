@@ -3,7 +3,6 @@ package pages;
 import common.BasePage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 
 public class GroupsPage extends BasePage {
     ProfilePage profile = new ProfilePage();
@@ -39,7 +38,7 @@ public class GroupsPage extends BasePage {
     }
 
     @Step("Создание новой Приватной группы")
-    public void createPrivateGroup() {
+    public String createPrivateGroup() {
         String group = "Group_" + getRandomNumber(999999);
         profile.clickGroups();
         click(addButton);
@@ -52,6 +51,7 @@ public class GroupsPage extends BasePage {
         click(privateBtn);
         click(elementName("Create"));
         waitElementName(group);
+        return group;
     }
     @Step("Редактирование группы '{groupName}'")
     public void editGroup(String groupName) throws InterruptedException {
