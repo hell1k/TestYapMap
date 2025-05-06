@@ -21,6 +21,17 @@ public class GroupsTest extends BasePage {
         groups.createPrivateGroup();
     }
 
+    @Test(description = "Редактирование группы")
+    @Description("Редактирование группы")
+    public void editGroup() throws InterruptedException {
+        profile.openProfile();
+        profile.clickGroups();
+        String groupName = groups.createGroup();
+        wait(3);
+        groups.openGroup(groupName);
+        groups.editGroup(groupName);
+    }
+
     @Test(description = "Взаимодействие с группой участником группы")
     public void testGroupParticipant() throws InterruptedException {
         profile.openProfile();
