@@ -14,10 +14,9 @@ public class EventsTest extends BasePage {
 
     @Test(description = "Events lifecycle")
     @Description("Events lifecycle")
-    public void eventsLifecycle() {
-//        profile.openProfile();
-//        events.createEvents();
-        swipeUp();
-        System.out.println();
+    public void eventsLifecycle() throws InterruptedException {
+        profile.openProfile();
+        events.createEvents();
+
     }
 }
