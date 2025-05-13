@@ -2,7 +2,6 @@ package tests;
 
 import common.BasePage;
 import io.qameta.allure.Description;
-import io.qameta.allure.Step;
 import org.testng.annotations.Test;
 
 public class GroupsTest extends BasePage {
@@ -23,6 +22,8 @@ public class GroupsTest extends BasePage {
 
     @Test(description = "Взаимодействие с группой участником группы")
     public void testGroupParticipant() throws InterruptedException {
+        profile.logout();
+        auth.authorization(data.login);
         profile.openProfile();
         String groupName = groups.createGroup();
         profile.logout();
