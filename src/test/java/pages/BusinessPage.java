@@ -31,12 +31,13 @@ public class BusinessPage extends BasePage {
     By saveChangesBtn = By.xpath("//XCUIElementTypeButton[@name=\"SAVE\"]");
     By showToToggle = By.xpath("//XCUIElementTypeSwitch[@value]");
     By postBtn = By.xpath("//XCUIElementTypeButton[@name=\"POST\"]");
+    By arrowBtn = By.xpath("//XCUIElementTypeButton[@name=\"chevron\"]");
 //    By saveBtn = By.xpath("//XCUIElementTypeButton[@name=\"SAVE\"]");
     By businessToDelete = By.xpath("//XCUIElementTypeCell/XCUIElementTypeOther[1]/XCUIElementTypeOther");
     By deleteBtn = By.xpath("//XCUIElementTypeButton[@name='Delete']");
     By yesBtn = By.xpath("//XCUIElementTypeButton[@name=\"Yes\"]");
     By favoriteBtn = By.xpath("//XCUIElementTypeButton[@name=\"ic not favorited\"]");
-    By extraBtn = By.xpath("//XCUIElementTypeButton[@name=\"treeDots\"]");
+    By treeDots = By.xpath("//XCUIElementTypeButton[@name=\"treeDots\"]");
     By editBtn = By.xpath("//XCUIElementTypeButton[@name=\"Edit\"]");
     By photoEdit = By.xpath("//XCUIElementTypeWindow/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeCollectionView/XCUIElementTypeCell/XCUIElementTypeOther/XCUIElementTypeImage");
     By photoEditDeleteBtn = By.xpath("//XCUIElementTypeButton[@name=\"ic delete\"]");
@@ -69,6 +70,7 @@ public class BusinessPage extends BasePage {
 
     @Step("Добавление новой записи Business Все Поле")
     public void addNewBusinessWithFullFields () throws InterruptedException {
+        wait(2);
         deleteBusiness();
         click(addBusinessBtn);
         addPhoto();
@@ -86,8 +88,9 @@ public class BusinessPage extends BasePage {
 
     @Step("редактироание Бизнеса")
     public void editBusiness() throws InterruptedException {
-        clickOnBusiness();
-        click(extraBtn);
+        waitElement(arrowBtn);
+        click(arrowBtn);
+        click(treeDots);
         click(editBtn);
         addPhotoInEdit();
         addBusinessName();
@@ -119,26 +122,22 @@ public class BusinessPage extends BasePage {
     }
 
     public void addToFavorite() {
-        clickOnBusiness();
-        click(extraBtn);
+        click(treeDots);
         click(favoriteBtn);
     }
 
     public void share() {
-        clickOnBusiness();
-        click(extraBtn);
+        click(treeDots);
         click(shareBtn);
         click(closeShareBtn);
     }
     public void generateQrCode() {
-        clickOnBusiness();
-        click(extraBtn);
+        click(treeDots);
         click(generateQrCodeBtn);
         click(closeQrCodeBtn);
     }
     public void deleteBusinessExtra() {
-        clickOnBusiness();
-        click(extraBtn);
+        click(treeDots);
         click(deleteBtnExtra);
         click(confirmDeleteBtn);
     }

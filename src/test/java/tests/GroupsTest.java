@@ -7,17 +7,23 @@ import org.testng.annotations.Test;
 public class GroupsTest extends BasePage {
 
     @Test(description = "Group lifecycle")
-    @Description("Создание Не приватной группы")
-    public void createPublicGroup() {
+    @Description("Создание и редактирование Не приватной группы")
+    public void createPublicGroup() throws InterruptedException {
         profile.openProfile();
-        groups.createGroup();
+        String groupName = groups.createGroup();
+        wait(3);
+        groups.openGroup(groupName);
+        groups.editGroup(groupName);
     }
 
-    @Test(description = "Создание Приватной группы")
+    @Test(description = "Создание и редактирование Приватной группы")
     @Description("Создание Приватной группы")
-    public void createPrivateGroup() {
+    public void createPrivateGroup() throws InterruptedException {
         profile.openProfile();
-        groups.createPrivateGroup();
+        String groupName = groups.createPrivateGroup();
+        wait(3);
+        groups.openGroup(groupName);
+        groups.editGroup(groupName);
     }
 
     @Test(description = "Взаимодействие с группой участником группы")

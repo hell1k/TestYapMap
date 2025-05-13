@@ -16,6 +16,9 @@ public class GroupsPage extends BasePage {
     By blockedMembersBtn = By.name("Blocked members");
     By deleteGroupBtn = By.name("Delete Group");
     By closeShareBtn = By.name("header.closeButton");
+    By groupLogo = By.xpath("//XCUIElementTypeNavigationBar[@name]/XCUIElementTypeButton[2]");
+    By groupNameEdit = By.xpath("(//XCUIElementTypeTextView[@value])[1]");
+    By groupDescriptionEdit = By.xpath("(//XCUIElementTypeTextView[@value])[2]");
 
     @Step("Создание новой Не приватной группы")
     public String createGroup() {
@@ -35,7 +38,7 @@ public class GroupsPage extends BasePage {
     }
 
     @Step("Создание новой Приватной группы")
-    public void createPrivateGroup() {
+    public String createPrivateGroup() {
         String group = "Group_" + getRandomNumber(999999);
         profile.clickGroups();
         click(addButton);
@@ -48,27 +51,24 @@ public class GroupsPage extends BasePage {
         click(privateBtn);
         click(elementName("Create"));
         waitElementName(group);
+        return group;
     }
-//    @Step("Редактирование группы '{groupName}'")
-//    public void editGroup() throws InterruptedException {
-//        String originalGroupName = "Group_" + getRandomNumber(999999);
-//        String newGroupName = "Test group_" + getRandomNumber(999999999);
-//
-//        click(By.xpath("//XCUIElementTypeStaticText[@name='" + originalGroupName + "']"));
-//        wait(1);
-//        click(elementName("Edit group"));
-//        clearAndSendKeys(By.id(originalGroupName), newGroupName);
-//        clearAndSendKeys(groupDescription, getRandomText(250));
-//        click(elementName("Save"));
-//        wait(1);
-//        clickButton("Back");
-//        waitElement(By.xpath("//XCUIElementTypeStaticText[@name='" + newGroupName + "']"));
-//    }
-//
-//    @Step("Нажать на кнопку редактирования группы")
-//    public void clickEditGroup() {
-//        click(elementName("Edit Group"));
-//    }
+    @Step("Редактирование группы '{groupName}'")
+    public void editGroup(String groupName) throws InterruptedException {
+        String newGroupName = "Test group_" + getRandomNumber(999999999);
+
+        click(groupLogo);
+        click(treeDots);
+        wait(1);
+        click(elementName("Edit"));
+        clearAndSendKeys(groupNameEdit, newGroupName);
+        clearAndSendKeys(groupDescriptionEdit, getRandomText(250));
+        click(elementName("Save"));
+        wait(1);
+        clickButton("ic ic back");
+        clickButton("Groups");
+        waitElement(By.xpath("//XCUIElementTypeStaticText[@name='" + newGroupName + "']"));
+    }
 
     @Step("Переход в группу {groupName}")
     public void openGroup(String groupName) {
