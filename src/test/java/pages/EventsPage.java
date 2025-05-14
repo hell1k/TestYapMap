@@ -1,9 +1,11 @@
 package pages;
+
 import common.BasePage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Random;
@@ -23,8 +25,9 @@ public class EventsPage extends BasePage {
     By dayOptions = By.xpath("(//XCUIElementTypePickerWheel)[1]");
     By monthOptions = By.xpath("(//XCUIElementTypePickerWheel)[2]");
     By yearOptions = By.xpath("(//XCUIElementTypePickerWheel)[3]");
-    By startDateBtn = By.xpath("//XCUIElementTypeApplication[@name=\"Relagram\"]/XCUIElementTypeWindow[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeCollectionView/XCUIElementTypeCell[4]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[1]/XCUIElementTypeOther[1]/XCUIElementTypeTextField");
-    By endDateBtn = By.xpath("//XCUIElementTypeApplication[@name=\"Relagram\"]/XCUIElementTypeWindow[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeCollectionView/XCUIElementTypeCell[2]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeTextField");
+    By startDateBtn = By.xpath("((//XCUIElementTypeCollectionView)[1]/XCUIElementTypeCell[2]//XCUIElementTypeTextField)[1]");
+    By dateToolbar = By.xpath("//XCUIElementTypeToolbar[@name=\"Toolbar\"]");
+    By endDateBtn = By.xpath("((//XCUIElementTypeCollectionView)[1]/XCUIElementTypeCell[2]//XCUIElementTypeTextField)[3]");
     By liveEventBtn = By.name("Live event");
     By onlineEventBtn = By.name("Online event");
     By mapIconBtn = By.name("mapIcon");
@@ -35,32 +38,50 @@ public class EventsPage extends BasePage {
     By showItBtn = By.xpath("(//XCUIElementTypeSwitch[@value])[3]");
     By showMeToThisCommunityBtn = By.xpath("(//XCUIElementTypeSwitch[@value])[4]");
     By showMyExactLocationBtn = By.xpath("(//XCUIElementTypeSwitch[@value])[5]");
+    By deletePhotoBtn = By.xpath("//XCUIElementTypeButton[@name=\"icDeleteWhite\"]");
+    By addToFavoriteBtn = By.xpath("//XCUIElementTypeButton[@name=\"ic not favorited\"]");
+    By treeDots = By.xpath("//XCUIElementTypeButton[@name=\"treeDots\"]");
+    By closeShareBtn = By.name("header.closeButton");
+    By closeQrCodeBtn = By.xpath("//XCUIElementTypeButton[@name=\"ic close primary\"]");
+    By leaveBtn = By.xpath("(//XCUIElementTypeButton[@name=\"Leave\"])[2]");
 
-    public void createPrivateEvents() throws InterruptedException {
+    public String createEvents(boolean isPrivate) throws InterruptedException {
         profile.clickEvents();
         click(addButton);
         waitElementName("New Event");
         addPhoto(uploadPhoto);
         click(elementName("Done"));
-        setText(nameEvent, "New event_" + getRandomNumber(999999));
+        String eventName = "New event_" + getRandomNumber(999999);
+        setText(nameEvent, eventName);
         setText(description, "description");
         chooseEventType();
         addPhoto(addPhotoBtn);
         click(elementName("Done"));
+        waitElement(deletePhotoBtn);
+        waitASecond();
+        swipeUp();
         click(startDateBtn);
+        waitElement(dateToolbar);
         LocalDate startDate = chooseStartDate();
         click(elementName("Done"));
         click(endDateBtn);
+        waitElement(dateToolbar);
         chooseEndDate(startDate);
         click(elementName("Done"));
         chooseLocation();
         chooseNumberMembers();
-        click(privateBtn);
+        if (isPrivate) {
+            click(privateBtn);
+        }
+
         click(pinChatBtn);
         click(showMeToThisCommunityBtn);
         click(showMyExactLocationBtn);
         click(createBtn);
         click(elementName("Yes"));
+        waitElementName(eventName);
+        waitElementName("There are no messages in this chat.");
+        return eventName;
     }
 
     @Step("Выбор типа события")
@@ -74,21 +95,21 @@ public class EventsPage extends BasePage {
         int randomIndex = new Random().nextInt(eventType.size());
         WebElement randomGenderElement = eventType.get(randomIndex);
         randomGenderElement.click();
-        }
+    }
 
-        public void addPhoto(By locator) throws InterruptedException {
-            click(locator);
-            click(elementName("Photo Library"));
-            wait(2);
-            List<WebElement> eventType = getElements(photoOptions);
-            if (eventType.size() <= 1) {
-                throw new IllegalStateException("Нет элементов для выбора");
-            }
-            int randomIndex = new Random().nextInt(eventType.size());
-            WebElement randomGenderElement = eventType.get(randomIndex);
-            randomGenderElement.click();
-            wait(2);
+    public void addPhoto(By locator) throws InterruptedException {
+        click(locator);
+        click(elementName("Photo Library"));
+        wait(2);
+        List<WebElement> eventType = getElements(photoOptions);
+        if (eventType.size() <= 1) {
+            throw new IllegalStateException("Нет элементов для выбора");
         }
+        int randomIndex = new Random().nextInt(eventType.size());
+        WebElement randomGenderElement = eventType.get(randomIndex);
+        randomGenderElement.click();
+        wait(2);
+    }
 
 //    public void chooseDate() {
 //
@@ -140,7 +161,7 @@ public class EventsPage extends BasePage {
         LocalDate today = LocalDate.now();
         Random rand = new Random();
 
-        String[] years = {"2025", "2026", "2027", "2028", "2029", "2030"};
+        String[] years = {"2025"};
         String[] months = {"January", "February", "March", "April", "May", "June",
                 "July", "August", "September", "October", "November", "December"};
 
@@ -150,8 +171,8 @@ public class EventsPage extends BasePage {
 
         while (true) {
             selectedYear = Integer.parseInt(years[rand.nextInt(years.length)]);
-            selectedMonth = rand.nextInt(12) + 1;
-            selectedDay = rand.nextInt(28) + 1;
+            selectedMonth = getRandomNumber(1, 12);
+            selectedDay =  getRandomNumber(1, 28);
 
             LocalDate candidate = LocalDate.of(selectedYear, selectedMonth, selectedDay);
             if (!candidate.isBefore(today)) {
@@ -174,7 +195,7 @@ public class EventsPage extends BasePage {
         while (true) {
             // Генерируем случайный год и месяц
             int year = rand.nextInt(maxEndDate.getYear() - startDate.getYear() + 1) + startDate.getYear();
-            int month = rand.nextInt(12) + 1;
+            int month = getRandomNumber(1, 12);
 
             // Определяем количество дней в выбранном месяце
             int daysInMonth = LocalDate.of(year, month, 1).lengthOfMonth();
@@ -201,8 +222,103 @@ public class EventsPage extends BasePage {
     }
 
     public void chooseNumberMembers() {
-        clearAndSendKeys(numberOfMembersBtn, "5");
+        clearAndSendKeys(numberOfMembersBtn, String.valueOf(getRandomNumber(1, 10)));
     }
+
+    @Step("Добавление в избранное Event")
+    public void addToFavorite() {
+        click(addToFavoriteBtn);
+    }
+
+    @Step("Проверка опций Event")
+    public void checkingTreeDots() throws InterruptedException {
+        clickTreeDots();
+        clickButton("Share");
+        waitElementContainsName("See this event on Relagram https://relagram.com/share");
+        click(closeShareBtn);
+        waitASecond();
+        waitASecond();
+        clickTreeDots();
+        clickButton("Share to Relagram");
+        waitElementName("Groups");
+        waitElement(button("Share"), "кнопка Share");
+        clickButton("Event");
+        waitASecond();
+        clickTreeDots();
+        clickButton("Generate QR code");
+        waitElementName("Share QR code");
+        click(closeQrCodeBtn, "кнопка закрытия QR кода");
+        waitASecond();
+//        click(treeDots, "меню группы (троеточие)");
+//        inviteNewMembers();
+//        click(treeDots, "меню группы (троеточие)");
+//        inviteNewAdmin();
+        clickTreeDots();
+        clickButton("Send message");
+        waitElementName("Type a message");
+        waitElementName("icSendOn");
+        clickButton("Event");
+        waitElementName("Event");
+    }
+
+    @Step("Добавление рандомного участника")
+    public void inviteNewMembers() {
+        clickButton("Invite new members");
+        waitElementName("Select contacts");
+        waitElementName("checkbox delselected");
+        clickRandomElement(elementName("checkbox delselected"));
+        waitElement(By.xpath("//XCUIElementTypeButton[@name=\"checkbox delselected\" and @value=\"1\"]"));
+        clickButton("Send");
+        waitElementName("Invitation sent");
+        clickButton("OK");
+        waitElementName("Event");
+    }
+
+    @Step("Добавление рандомного админа")
+    public void inviteNewAdmin() {
+        clickButton("Invite new admins");
+        waitElementName("Select contacts");
+        waitElementName("checkbox delselected");
+        clickRandomElement(elementName("checkbox delselected"));
+        waitElement(By.xpath("//XCUIElementTypeButton[@name=\"checkbox delselected\" and @value=\"1\"]"));
+        clickButton("Send");
+        waitElementName("Invitation sent");
+        clickButton("OK");
+        waitElementName("Event");
+    }
+
+    @Step("Join the event")
+    public void joinEvent() throws InterruptedException {
+        waitASecond();
+        clickTreeDots();
+        clickButton("Join");
+        waitElementName("Congrats! You’re the member of event now!");
+        clickButton("Ok");
+    }
+
+    @Step("Leave the event")
+    public void leaveEvent() {
+        clickButton("Leave");
+        waitElementName("Leave? All data will be lost!");
+        click(leaveBtn);
+    }
+
+    @Step("Report for review")
+    public void reportForReview() throws InterruptedException {
+        swipeUp();
+        swipeUp();
+        swipeUp();
+        clickButton("Report for review");
+        waitElementName("Choose the reason");
+        clickButton("Cancel");
+        waitASecond();
+    }
+
+    @Step("Клик по кнопке")
+    public void clickTreeDots() {
+        click(treeDots, "меню мероприятия (троеточие)");
+    }
+
 }
 
 
