@@ -16,7 +16,29 @@ public class EventsTest extends BasePage {
     @Description("Events lifecycle")
     public void eventsLifecycle() throws InterruptedException {
         profile.openProfile();
-//        events.createPrivateEvents();
-        events.eventCheckingElement();
+        events.createEvents(true);
+
+    }
+
+    @Test(description = "Взаимодействие с эвентом другого пользователя")
+    public void testEventWithOtherUser() throws InterruptedException {
+        profile.openProfile();
+        String eventName = events.createEvents(false);
+        clickBack();
+        profile.logout();
+        auth.authorization(data.login2);
+        search.selectEvents();
+        search.searchValue(eventName);
+        swipeUp();
+        click(elementName(eventName));
+        events.addToFavorite();
+        events.joinEvent();
+        events.checkingTreeDots();
+        events.reportForReview();
+        events.leaveEvent();
+        waitElementName(eventName);
+        click(elementName(eventName));
+        events.clickTreeDots();
+        waitElementName("Join");
     }
 }
