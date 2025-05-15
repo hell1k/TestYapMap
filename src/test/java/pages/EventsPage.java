@@ -10,12 +10,14 @@ import java.util.Random;
 
 public class EventsPage extends BasePage {
     ProfilePage profile = new ProfilePage();
+    private String createdEventName;
 
     By addButton = By.name("Add");
     By nameEvent = By.xpath("//XCUIElementTypeTextField");
     By description = By.xpath("//XCUIElementTypeTextView");
     By uploadPhoto = By.name("ic ic link");
     By createBtn = By.name("Create");
+    By okBtn = By.xpath("//XCUIElementTypeButton[@name=\"OK\"]");
     By eventTypeBtn = By.xpath("//XCUIElementTypeApplication[@name=\"Relagram\"]/XCUIElementTypeWindow[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeCollectionView/XCUIElementTypeCell[1]/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeButton");
     By eventTypeOptions = By.xpath("//XCUIElementTypeCollectionView/XCUIElementTypeCell/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[1]");
     By addPhotoBtn = By.name("Add Photo");
@@ -28,6 +30,8 @@ public class EventsPage extends BasePage {
     By liveEventBtn = By.name("Live event");
     By onlineEventBtn = By.name("Online event");
     By mapIconBtn = By.name("mapIcon");
+    By favoriteBtn = By.name("ic not favorited");
+    By treeDotsBtn = By.name("treeDots");
     By saveBtn = By.name("Save");
     By numberOfMembersBtn = By.xpath("//XCUIElementTypeWindow/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeCollectionView/XCUIElementTypeCell[3]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeTextField");
     By privateBtn = By.xpath("(//XCUIElementTypeSwitch[@value])[1]");
@@ -35,6 +39,8 @@ public class EventsPage extends BasePage {
     By showItBtn = By.xpath("(//XCUIElementTypeSwitch[@value])[3]");
     By showMeToThisCommunityBtn = By.xpath("(//XCUIElementTypeSwitch[@value])[4]");
     By showMyExactLocationBtn = By.xpath("(//XCUIElementTypeSwitch[@value])[5]");
+    By memberCheckbox = By.xpath("(//XCUIElementTypeButton[@name=\"checkbox delselected\"])[1]");
+    By deleteAndLeaveBtn = By.xpath("//XCUIElementTypeButton[@name=\"Delete and Leave\"]");
 
     public void createPrivateEvents() throws InterruptedException {
         profile.clickEvents();
@@ -42,7 +48,9 @@ public class EventsPage extends BasePage {
         waitElementName("New Event");
         addPhoto(uploadPhoto);
         click(elementName("Done"));
-        setText(nameEvent, "New event_" + getRandomNumber(999999));
+        this.createdEventName = "New event_" + getRandomNumber(999999);
+        setText(nameEvent, this.createdEventName);
+//        setText(nameEvent, "New event_" + getRandomNumber(999999));
         setText(description, "description");
         chooseEventType();
         addPhoto(addPhotoBtn);
@@ -63,11 +71,64 @@ public class EventsPage extends BasePage {
         click(elementName("Yes"));
     }
 
+    public void eventCheckingElement() throws InterruptedException {
+        createPrivateEvents();
+        openCreatedEvent();
+        clearAndSendKeys(nameEvent, "New event_" + getRandomNumber(999999));
+        click(favoriteBtn);
+        checkingMenu();
+        inviteNewMember();
+    }
+
+    public void openCreatedEvent() throws InterruptedException {
+//        profile.clickEvents();
+        click(elementName(this.createdEventName));
+    }
+
+    @Step("Проверка меню группы (троеточие)")
+    public void checkingMenu() throws InterruptedException {
+        click(treeDotsBtn, "меню группы (троеточие)");
+        clickButton("Share");
+        click(elementName("header.closeButton"));
+        waitASecond();
+        waitASecond();
+        click(treeDotsBtn, "меню группы (троеточие)");
+        click(elementName("Generate QR code"));
+        waitElementName("Share QR code");
+        click(elementName("ic close primary"));
+        click(treeDotsBtn, "меню группы (троеточие)");
+        clickButton("Share to Relagram");
+        waitElementName("Groups");
+        waitElement(button("Share"), "кнопка Share");
+        clickButton("Event");
+        waitASecond();
+        click(treeDotsBtn, "меню группы (троеточие)");
+        inviteNewMember();
+        click(treeDotsBtn, "меню группы (троеточие)");
+        inviteNewAdmin();
+        click(deleteAndLeaveBtn);
+        click(elementName("Delete"));
+    }
+
+    public void inviteNewMember() {
+        click(elementName("Invite new members"));
+        click(memberCheckbox);
+        click(elementName("Send"));
+        click(okBtn);
+    }
+
+    public void inviteNewAdmin() {
+        click(elementName("Invite new admin"));
+        click(memberCheckbox);
+        click(elementName("Send"));
+        click(okBtn);
+    }
+
     @Step("Выбор типа события")
     public void chooseEventType() throws InterruptedException {
         click(eventTypeBtn, "нажатие на кнопку Event type");
         List<WebElement> eventType = getElements(eventTypeOptions);
-        wait(2);
+        wait(3);
         if (eventType.size() <= 1) {
             throw new IllegalStateException("Нет элементов для выбора");
         }
@@ -79,7 +140,7 @@ public class EventsPage extends BasePage {
         public void addPhoto(By locator) throws InterruptedException {
             click(locator);
             click(elementName("Photo Library"));
-            wait(2);
+           waitElement(photoOptions);
             List<WebElement> eventType = getElements(photoOptions);
             if (eventType.size() <= 1) {
                 throw new IllegalStateException("Нет элементов для выбора");
@@ -89,52 +150,6 @@ public class EventsPage extends BasePage {
             randomGenderElement.click();
             wait(2);
         }
-
-//    public void chooseDate() {
-//
-//        LocalDate today = LocalDate.now();
-//        Random rand = new Random();
-//
-//        // Подходящие годы из массива
-//        String[] years = {"2029", "2028", "2027", "2026", "2025", "2030"};
-//        String[] values = {"January", "February", "March", "April", "May", "June",
-//                "July", "August", "September", "October", "November", "December"};
-//
-//
-//        // Получаем текущий год, месяц и день
-//        int currentYear = today.getYear();
-//        int currentMonth = today.getMonthValue();
-//        int currentDay = today.getDayOfMonth();
-//
-//        String selectedYear;
-//        do {
-//            selectedYear = years[rand.nextInt(years.length)];
-//        } while (Integer.parseInt(selectedYear) < currentYear);
-//
-//        String selectedMonth;
-//        int monthIndex;
-//        do {
-//            monthIndex = rand.nextInt(values.length); // 0–11
-//            selectedMonth = values[monthIndex];
-//        } while (Integer.parseInt(selectedYear) == currentYear && monthIndex + 1 < currentMonth);
-//
-//        int selectedDay;
-//        do {
-//            selectedDay = rand.nextInt(28) + 1;
-//        } while (Integer.parseInt(selectedYear) == currentYear &&
-//                monthIndex + 1 == currentMonth &&
-//                selectedDay < currentDay);
-//
-//        // Подставляем в элементы
-//        List<WebElement> yearType = getElements(yearOptions);
-//        yearType.get(0).sendKeys(selectedYear);
-//
-//        List<WebElement> monthType = getElements(monthOptions);
-//        monthType.get(0).sendKeys(selectedMonth);
-//
-//        List<WebElement> dayType = getElements(dayOptions);
-//        dayType.get(0).sendKeys(String.valueOf(selectedDay));
-//    }
 
     public LocalDate chooseStartDate() {
         LocalDate today = LocalDate.now();

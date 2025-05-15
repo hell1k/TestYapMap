@@ -16,7 +16,7 @@ public class EventsTest extends BasePage {
     @Description("Events lifecycle")
     public void eventsLifecycle() throws InterruptedException {
         profile.openProfile();
-        events.createPrivateEvents();
-
+//        events.createPrivateEvents();
+        events.eventCheckingElement();
     }
 }
