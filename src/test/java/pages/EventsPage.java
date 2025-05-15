@@ -12,14 +12,12 @@ import java.util.Random;
 
 public class EventsPage extends BasePage {
     ProfilePage profile = new ProfilePage();
-    private String createdEventName;
 
     By addButton = By.name("Add");
     By nameEvent = By.xpath("//XCUIElementTypeTextField");
     By description = By.xpath("//XCUIElementTypeTextView");
     By uploadPhoto = By.name("ic ic link");
     By createBtn = By.name("Create");
-    By okBtn = By.xpath("//XCUIElementTypeButton[@name=\"OK\"]");
     By eventTypeBtn = By.xpath("//XCUIElementTypeApplication[@name=\"Relagram\"]/XCUIElementTypeWindow[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeCollectionView/XCUIElementTypeCell[1]/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeButton");
     By eventTypeOptions = By.xpath("//XCUIElementTypeCollectionView/XCUIElementTypeCell/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[1]");
     By addPhotoBtn = By.name("Add Photo");
@@ -30,19 +28,16 @@ public class EventsPage extends BasePage {
     By startDateBtn = By.xpath("((//XCUIElementTypeCollectionView)[1]/XCUIElementTypeCell[2]//XCUIElementTypeTextField)[1]");
     By dateToolbar = By.xpath("//XCUIElementTypeToolbar[@name=\"Toolbar\"]");
     By endDateBtn = By.xpath("((//XCUIElementTypeCollectionView)[1]/XCUIElementTypeCell[2]//XCUIElementTypeTextField)[3]");
-    By liveEventBtn = By.name("Live event");
-    By onlineEventBtn = By.name("Online event");
     By mapIconBtn = By.name("mapIcon");
+    By locationBtn = By.xpath("//XCUIElementTypeApplication[@name=\"Relagram\"]/XCUIElementTypeWindow[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeCollectionView/XCUIElementTypeCell[2]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[4]/XCUIElementTypeTextField");
     By favoriteBtn = By.name("ic not favorited");
     By treeDotsBtn = By.name("treeDots");
     By saveBtn = By.name("Save");
     By numberOfMembersBtn = By.xpath("//XCUIElementTypeWindow/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeCollectionView/XCUIElementTypeCell[3]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeTextField");
     By privateBtn = By.xpath("(//XCUIElementTypeSwitch[@value])[1]");
     By pinChatBtn = By.xpath("(//XCUIElementTypeSwitch[@value])[2]");
-    By showItBtn = By.xpath("(//XCUIElementTypeSwitch[@value])[3]");
     By showMeToThisCommunityBtn = By.xpath("(//XCUIElementTypeSwitch[@value])[4]");
     By showMyExactLocationBtn = By.xpath("(//XCUIElementTypeSwitch[@value])[5]");
-    By memberCheckbox = By.xpath("(//XCUIElementTypeButton[@name=\"checkbox delselected\"])[1]");
     By deleteAndLeaveBtn = By.xpath("//XCUIElementTypeButton[@name=\"Delete and Leave\"]");
     By deletePhotoBtn = By.xpath("//XCUIElementTypeButton[@name=\"icDeleteWhite\"]");
     By addToFavoriteBtn = By.xpath("//XCUIElementTypeButton[@name=\"ic not favorited\"]");
@@ -51,6 +46,7 @@ public class EventsPage extends BasePage {
     By closeQrCodeBtn = By.xpath("//XCUIElementTypeButton[@name=\"ic close primary\"]");
     By leaveBtn = By.xpath("(//XCUIElementTypeButton[@name=\"Leave\"])[2]");
 
+    @Step("Создание ноого События")
     public String createEvents(boolean isPrivate) throws InterruptedException {
         profile.clickEvents();
         click(addButton);
@@ -79,7 +75,6 @@ public class EventsPage extends BasePage {
         if (isPrivate) {
             click(privateBtn);
         }
-
         click(pinChatBtn);
         click(showMeToThisCommunityBtn);
         click(showMyExactLocationBtn);
@@ -90,18 +85,13 @@ public class EventsPage extends BasePage {
         return eventName;
     }
 
+    @Step("Проверка меню Event (троеточие)")
     public void eventCheckingElement() throws InterruptedException {
-        createPrivateEvents();
-        openCreatedEvent();
+        String eventName = createEvents(true);
+        click(elementName(eventName));
         clearAndSendKeys(nameEvent, "New event_" + getRandomNumber(999999));
         click(favoriteBtn);
         checkingMenu();
-        inviteNewMember();
-    }
-
-    public void openCreatedEvent() throws InterruptedException {
-//        profile.clickEvents();
-        click(elementName(this.createdEventName));
     }
 
     @Step("Проверка меню группы (троеточие)")
@@ -109,8 +99,6 @@ public class EventsPage extends BasePage {
         click(treeDotsBtn, "меню группы (троеточие)");
         clickButton("Share");
         click(elementName("header.closeButton"));
-        waitASecond();
-        waitASecond();
         click(treeDotsBtn, "меню группы (троеточие)");
         click(elementName("Generate QR code"));
         waitElementName("Share QR code");
@@ -122,25 +110,15 @@ public class EventsPage extends BasePage {
         clickButton("Event");
         waitASecond();
         click(treeDotsBtn, "меню группы (троеточие)");
-        inviteNewMember();
+        inviteNewMembers();
         click(treeDotsBtn, "меню группы (троеточие)");
         inviteNewAdmin();
+        swipeUp();
+        swipeUp();
+        swipeUp();
+        swipeUp();
         click(deleteAndLeaveBtn);
         click(elementName("Delete"));
-    }
-
-    public void inviteNewMember() {
-        click(elementName("Invite new members"));
-        click(memberCheckbox);
-        click(elementName("Send"));
-        click(okBtn);
-    }
-
-    public void inviteNewAdmin() {
-        click(elementName("Invite new admin"));
-        click(memberCheckbox);
-        click(elementName("Send"));
-        click(okBtn);
     }
 
     @Step("Выбор типа события")
@@ -170,6 +148,7 @@ public class EventsPage extends BasePage {
             wait(2);
         }
 
+    @Step("Выбор времени Начала события")
     public LocalDate chooseStartDate() {
         LocalDate today = LocalDate.now();
         Random rand = new Random();
@@ -198,6 +177,7 @@ public class EventsPage extends BasePage {
         }
     }
 
+    @Step("Выбор времени Окончания события")
     public void chooseEndDate(LocalDate startDate) {
         LocalDate maxEndDate = startDate.plusYears(1);
         Random rand = new Random();
@@ -206,20 +186,12 @@ public class EventsPage extends BasePage {
                 "July", "August", "September", "October", "November", "December"};
 
         while (true) {
-            // Генерируем случайный год и месяц
             int year = rand.nextInt(maxEndDate.getYear() - startDate.getYear() + 1) + startDate.getYear();
             int month = getRandomNumber(1, 12);
-
-            // Определяем количество дней в выбранном месяце
             int daysInMonth = LocalDate.of(year, month, 1).lengthOfMonth();
-
-            // Генерируем случайный день в пределах допустимых дней
             int day = rand.nextInt(daysInMonth) + 1;
-
-            // Создаем кандидата на дату окончания
             LocalDate candidate = LocalDate.of(year, month, day);
 
-            // Проверка: дата не раньше даты начала и не позже максимальной даты
             if (!candidate.isBefore(startDate) && !candidate.isAfter(maxEndDate)) {
                 getElements(yearOptions).get(0).sendKeys(String.valueOf(year));
                 getElements(monthOptions).get(0).sendKeys(months[month - 1]);
@@ -229,11 +201,15 @@ public class EventsPage extends BasePage {
         }
     }
 
+    @Step("Выбор локации")
     public void chooseLocation() {
+        clearAndSendKeys(locationBtn, "Novosibirsk");
+        setText(locationBtn, " ");
         click(mapIconBtn);
         click(saveBtn);
     }
 
+    @Step("Выбор колличества участников")
     public void chooseNumberMembers() {
         clearAndSendKeys(numberOfMembersBtn, String.valueOf(getRandomNumber(1, 10)));
     }
@@ -262,10 +238,6 @@ public class EventsPage extends BasePage {
         waitElementName("Share QR code");
         click(closeQrCodeBtn, "кнопка закрытия QR кода");
         waitASecond();
-//        click(treeDots, "меню группы (троеточие)");
-//        inviteNewMembers();
-//        click(treeDots, "меню группы (троеточие)");
-//        inviteNewAdmin();
         clickTreeDots();
         clickButton("Send message");
         waitElementName("Type a message");

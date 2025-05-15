@@ -17,8 +17,14 @@ public class EventsTest extends BasePage {
     public void eventsLifecycle() throws InterruptedException {
         profile.openProfile();
         events.createEvents(true);
-
     }
+
+    @Test(description = "checkingEvent")
+    public void checkingEvent() throws InterruptedException {
+        profile.openProfile();
+        events.eventCheckingElement();
+    }
+
 
     @Test(description = "Взаимодействие с эвентом другого пользователя")
     public void testEventWithOtherUser() throws InterruptedException {

@@ -24,6 +24,7 @@ public class BasePage extends BaseElementsPage {
     public EventsPage events;
     public GroupsPage groups;
     public BusinessPage business;
+    public SearchBlock search;
 
     @BeforeMethod
     public void setUp() throws MalformedURLException, InterruptedException {
@@ -52,6 +53,7 @@ public class BasePage extends BaseElementsPage {
         groups = new GroupsPage();
         business = new BusinessPage();
         auth.authorization();
+        search = new SearchBlock();
     }
 
     @AfterMethod(alwaysRun = true)
