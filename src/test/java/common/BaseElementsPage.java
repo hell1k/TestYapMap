@@ -50,6 +50,14 @@ public class BaseElementsPage {
         el.sendKeys(text);
     }
 
+    @Step("Clear field '{fieldName}' and send keys")
+    public void clearAndSendKeys(By element, String text, String fieldName) {
+        WebElement el = getElement(element);
+        el.click();
+        el.clear();
+        el.sendKeys(text);
+    }
+
     public void clearField(By element) {
         WebElement el = getElement(element);
         el.click();
@@ -83,7 +91,6 @@ public class BaseElementsPage {
         return result.toString() + ".com";
     }
 
-    @Step("Ожидание элемента")
     public void waitElement(By locator) {
         wait.until(ExpectedConditions.presenceOfElementLocated(locator));
     }
@@ -93,18 +100,15 @@ public class BaseElementsPage {
         wait.until(ExpectedConditions.presenceOfElementLocated(locator));
     }
 
-    @Step("Ожидание элемента")
     public void waitClickableElement(By locator) {
         wait.until(ExpectedConditions.presenceOfElementLocated(locator));
     }
 
-    @Step("Клик по элементу")
     public void click(By locator) {
         waitClickableElement(locator);
         getElement(locator).click();
     }
 
-    @Step("Клик по элементу")
     public void click(String xpath) {
         waitClickableElement(By.xpath(xpath));
         getElement(By.xpath(xpath)).click();
@@ -116,7 +120,6 @@ public class BaseElementsPage {
         getElement(By.xpath(xpath)).click();
     }
 
-    @Step("Клик по элементу")
     public void click(WebElement element) {
         element.click();
     }
@@ -279,6 +282,10 @@ public class BaseElementsPage {
     @Step("Select random value")
     public void clickRandomElement(By locator) {
         getElements(locator).get(getRandomNumber(getElementsAmount(locator))).click();
+    }
+
+    public WebElement getRandomElement(By locator) {
+        return getElements(locator).get(getRandomNumber(getElementsAmount(locator)));
     }
 
     public static String generateRandomEmail() {

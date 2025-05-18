@@ -391,4 +391,9 @@ public class ProfilePage extends BasePage {
         click(logoutBtn, "Log Out");
         waitElement(button("SIGN IN"));
     }
+
+    @Step("Click on Pets")
+    public void clickPets() {
+        click(elementName("Pets"));
+    }
 }
