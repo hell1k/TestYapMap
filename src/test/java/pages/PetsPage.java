@@ -96,7 +96,7 @@ public class PetsPage extends BasePage {
         return valueName;
     }
 
-    @Step("Edit pet {petName}")
+    @Step("Edit pet")
     public String editPet() {
         String newPetName = "Test pet_" + getRandomNumber(999999);
         String newNickName = "Nickname" + getRandomNumber(999999);
