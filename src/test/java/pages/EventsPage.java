@@ -134,6 +134,7 @@ public class EventsPage extends BasePage {
         randomGenderElement.click();
     }
 
+    @Step("Добавление Фото")
         public void addPhoto(By locator) throws InterruptedException {
             click(locator);
             click(elementName("Photo Library"));
