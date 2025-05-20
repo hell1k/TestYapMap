@@ -21,9 +21,15 @@ public class JobsPage extends BasePage {
     By hourPerWeekBtn = By.xpath("//XCUIElementTypeTable/XCUIElementTypeCell[13]/XCUIElementTypeOther[1]/XCUIElementTypeOther");
     By hourPerWeekOptions = By.xpath("//XCUIElementTypeTable/XCUIElementTypeCell/XCUIElementTypeOther/XCUIElementTypeOther");
     By salaryPerBtn = By.xpath("//XCUIElementTypeTable/XCUIElementTypeCell[14]/XCUIElementTypeOther[1]/XCUIElementTypeOther");
-    By salaryPerOptions = By.xpath("//XCUIElementTypeTable/XCUIElementTypeCell/XCUIElementTypeOther/XCUIElementTypeOther");
+    By salaryPerOptions = By.xpath("//XCUIElementTypeTable/XCUIElementTypeCell/XCUIElementTypeOther[1]/XCUIElementTypeOther");
     By salaryAmount = By.xpath("//XCUIElementTypeTable/XCUIElementTypeCell[15]/XCUIElementTypeOther[1]/XCUIElementTypeOther");
     By currencyBtn = By.xpath("//XCUIElementTypeTable/XCUIElementTypeCell[16]/XCUIElementTypeOther[1]/XCUIElementTypeOther");
+    By arrowBtn = By.xpath("//XCUIElementTypeTable/XCUIElementTypeCell[1]/XCUIElementTypeOther[1]/XCUIElementTypeOther");
+    By positionName = By.xpath("(//XCUIElementTypeTextView[@value])[1]");
+    By commissionsTipsBtn = By.xpath("//XCUIElementTypeSwitch[@name='Commissions / tips']");
+    By canWorkRemotelyBtn = By.xpath("//XCUIElementTypeSwitch[@name='Can work remotely']");
+    By saveBtn = By.xpath("//XCUIElementTypeButton[@name=\"SAVE\"]");
+    By closeBtn = By.xpath("//XCUIElementTypeImage[@name=\"UICloseButtonBackground\"]");
 
     @Step("Добавление новой записи Job")
     public void addNewJob () throws InterruptedException {
@@ -39,9 +45,61 @@ public class JobsPage extends BasePage {
         chooseHourPerWeek();
         chooseSalaryPer();
         chooseSalaryAmount();
-        chooseCurrency();
-        click(elementName("Commissions / tips"));
-        click(elementName("Can work remotely"));
+//        chooseCurrency();
+        click(commissionsTipsBtn);
+        click(canWorkRemotelyBtn);
+        click(elementName("POST"));
+    }
+
+    @Step("редактироание Бизнеса")
+    public void editJob() throws InterruptedException {
+        click(elementName("Jobs"));
+        waitElement(arrowBtn);
+        click(arrowBtn);
+        click(elementName("treeDots"));
+        click(elementName("Edit"));
+        clearAndSendKeys(positionName, getRandomText(10));
+        addProfessionType();
+        clearAndSendKeys(dutiesDescription, getRandomText(20));
+        clearAndSendKeys(requiredEducation, getRandomText(20));
+        addPhoto();
+        chooseJobType();
+        chooseHourPerWeek();
+        chooseSalaryPer();
+        chooseSalaryAmount();
+//        chooseCurrency();
+        click(commissionsTipsBtn);
+        click(canWorkRemotelyBtn);
+        click(saveBtn);
+        click(saveBtn);
+    }
+
+    @Step("Проверка меню Job (троеточие)")
+    public void checkingJob() throws InterruptedException {
+        click(elementName("Jobs"));
+        waitElement(arrowBtn);
+        click(arrowBtn);
+        click(elementName("treeDots"), "меню группы (троеточие)");
+        clickButton("Share");
+        waitElementContainsName("Hey!");
+        click(closeBtn);
+        click(elementName("treeDots"), "меню группы (троеточие)");
+        clickButton("Generate QR code");
+        waitElementName("Share QR code");
+        click(elementName("ic close primary"), "кнопка закрытия QR кода");
+        click(elementName("Jobs"));
+    }
+
+    @Step("Удаление Job")
+    public void deleteJob() {
+        click(elementName("Jobs"));
+        waitElement(arrowBtn);
+        click(arrowBtn);
+        click(elementName("treeDots"), "меню группы (троеточие)");
+        click(elementName("Delete"), "Delete Group");
+        waitElementName("Are you sure you want to delete?");
+        clickButton("Yes");
+        clickBack();
     }
 
     @Step("Выбор валюты")
@@ -104,8 +162,9 @@ public class JobsPage extends BasePage {
     }
 
     @Step("добавление типа Job")
-    public void addProfessionType() {
+    public void addProfessionType() throws InterruptedException {
         click(professionTypeBtn);
+        wait(2);
         List<WebElement> typeElement = getElements(professionOptions);
 
         if (typeElement.isEmpty()) {

@@ -13,10 +13,31 @@ import java.util.Random;
 
 public class JobsTest extends BasePage {
 
-    @Test(description = "Jobs lifecycle")
-    @Description("Создание и редактирование Jobs")
+    @Test(description = "Создание Jobs")
+    @Description("Создание Jobs")
     public void createJob() throws InterruptedException {
         profile.openProfile();
         jobs.addNewJob();
+    }
+
+    @Test(description = "Редактирование Jobs")
+    @Description("Редактирование Jobs")
+    public void editJob() throws InterruptedException {
+        profile.openProfile();
+        jobs.editJob();
+    }
+
+    @Test(description = "Jobs check tree dots")
+    @Description("Jobs check tree dots")
+    public void checkJob() throws InterruptedException {
+        profile.openProfile();
+        jobs.checkingJob();
+    }
+
+    @Test(description = "Удаление Job")
+    @Description("Удаление Job")
+    public void deleteJob() throws InterruptedException {
+        profile.openProfile();
+        jobs.deleteJob();
     }
 }
