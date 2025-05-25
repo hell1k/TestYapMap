@@ -115,9 +115,14 @@ public class BaseElementsPage {
     }
 
     @Step("Клик по элементу {string}")
-    public void click(String xpath, String string) {
-        waitClickableElement(By.xpath(xpath));
-        getElement(By.xpath(xpath)).click();
+    public void click(String xpathOrName, String string) {
+        if (String.valueOf(xpathOrName.charAt(0)).equals("/")) {
+            waitClickableElement(By.xpath(xpathOrName));
+            getElement(By.xpath(xpathOrName)).click();
+        } else {
+            waitClickableElement(By.name(xpathOrName));
+            getElement(By.name(xpathOrName)).click();
+        }
     }
 
     public void click(WebElement element) {
@@ -171,6 +176,11 @@ public class BaseElementsPage {
     public int getRandomNumber(int min, int max) {
         Random random = new Random();
         return random.nextInt(max - min + 1) + min;
+    }
+
+    public String getRandomNumberString(int min, int max) {
+        Random random = new Random();
+        return String.valueOf(random.nextInt(max - min + 1) + min);
     }
 
     public By elementName(String name) {

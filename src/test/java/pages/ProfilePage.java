@@ -396,4 +396,9 @@ public class ProfilePage extends BasePage {
     public void clickPets() {
         click(elementName("Pets"));
     }
+
+    @Step("Click on Market")
+    public void clickMarket() {
+        click(elementName("Market"));
+    }
 }
