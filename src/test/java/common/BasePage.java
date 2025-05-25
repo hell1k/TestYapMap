@@ -25,6 +25,7 @@ public class BasePage extends BaseElementsPage {
     public GroupsPage groups;
     public BusinessPage business;
     public SearchBlock search;
+    public JobsPage jobs;
     public PetsPage pets;
     public MarketPage market;
 
@@ -55,6 +56,7 @@ public class BasePage extends BaseElementsPage {
         groups = new GroupsPage();
         business = new BusinessPage();
         search = new SearchBlock();
+        jobs = new JobsPage();
         pets = new PetsPage();
         market = new MarketPage();
         auth.authorization();

@@ -134,19 +134,20 @@ public class EventsPage extends BasePage {
         randomGenderElement.click();
     }
 
-    public void addPhoto(By locator) throws InterruptedException {
-        click(locator);
-        click(elementName("Photo Library"));
-        waitElement(photoOptions);
-        List<WebElement> eventType = getElements(photoOptions);
-        if (eventType.size() <= 1) {
-            throw new IllegalStateException("Нет элементов для выбора");
+    @Step("Добавление Фото")
+        public void addPhoto(By locator) throws InterruptedException {
+            click(locator);
+            click(elementName("Photo Library"));
+           waitElement(photoOptions);
+            List<WebElement> eventType = getElements(photoOptions);
+            if (eventType.size() <= 1) {
+                throw new IllegalStateException("Нет элементов для выбора");
+            }
+            int randomIndex = new Random().nextInt(eventType.size());
+            WebElement randomGenderElement = eventType.get(randomIndex);
+            randomGenderElement.click();
+            wait(2);
         }
-        int randomIndex = new Random().nextInt(eventType.size());
-        WebElement randomGenderElement = eventType.get(randomIndex);
-        randomGenderElement.click();
-        wait(2);
-    }
 
     @Step("Выбор времени Начала события")
     public LocalDate chooseStartDate() {
