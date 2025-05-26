@@ -298,10 +298,6 @@ public class BaseElementsPage {
         getElements(locator).get(getRandomNumber(getElementsAmount(locator))).click();
     }
 
-    public WebElement getRandomElement(By locator) {
-        return getElements(locator).get(getRandomNumber(getElementsAmount(locator)));
-    }
-
     public static String generateRandomEmail() {
         String characters = "abcdefghijklmnopqrstuvwxyz0123456789";
         StringBuilder sb = new StringBuilder();
