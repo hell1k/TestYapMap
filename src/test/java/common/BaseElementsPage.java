@@ -38,6 +38,10 @@ public class BaseElementsPage {
         Thread.sleep((int) time);
     }
 
+    public WebElement getRandomElement(By locator) {
+        return getElements(locator).get(getRandomNumber(getElementsAmount(locator)));
+    }
+
     public void waitASecond() throws InterruptedException {
         wait(1);
     }
