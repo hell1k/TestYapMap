@@ -26,6 +26,7 @@ public class BasePage extends BaseElementsPage {
     public BusinessPage business;
     public SearchBlock search;
     public JobsPage jobs;
+    public PetsPage pets;
     public MarketPage market;
 
     @BeforeMethod
@@ -54,10 +55,11 @@ public class BasePage extends BaseElementsPage {
         events = new EventsPage();
         groups = new GroupsPage();
         business = new BusinessPage();
-        auth.authorization();
         search = new SearchBlock();
         jobs = new JobsPage();
+        pets = new PetsPage();
         market = new MarketPage();
+        auth.authorization();
     }
 
     @AfterMethod(alwaysRun = true)

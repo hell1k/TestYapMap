@@ -9,7 +9,11 @@ public class MarketTest extends BasePage {
     @Test(description = "Market lifecycle")
     @Description("Создание маркета стаф")
     public void createMarketStaff() throws InterruptedException {
+    @Test(description = "Market Housing lifecycle")
+    void housingLifecycle() throws InterruptedException {
         profile.openProfile();
         market.createMarketStuff();
+        profile.clickMarket();
+        market.addHousing();
     }
 }

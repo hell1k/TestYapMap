@@ -54,6 +54,14 @@ public class BaseElementsPage {
         el.sendKeys(text);
     }
 
+    @Step("Clear field '{fieldName}' and send keys")
+    public void clearAndSendKeys(By element, String text, String fieldName) {
+        WebElement el = getElement(element);
+        el.click();
+        el.clear();
+        el.sendKeys(text);
+    }
+
     public void clearField(By element) {
         WebElement el = getElement(element);
         el.click();
@@ -87,7 +95,6 @@ public class BaseElementsPage {
         return result.toString() + ".com";
     }
 
-    @Step("Ожидание элемента")
     public void waitElement(By locator) {
         wait.until(ExpectedConditions.presenceOfElementLocated(locator));
     }
@@ -97,30 +104,31 @@ public class BaseElementsPage {
         wait.until(ExpectedConditions.presenceOfElementLocated(locator));
     }
 
-    @Step("Ожидание элемента")
     public void waitClickableElement(By locator) {
         wait.until(ExpectedConditions.presenceOfElementLocated(locator));
     }
 
-    @Step("Клик по элементу")
     public void click(By locator) {
         waitClickableElement(locator);
         getElement(locator).click();
     }
 
-    @Step("Клик по элементу")
     public void click(String xpath) {
         waitClickableElement(By.xpath(xpath));
         getElement(By.xpath(xpath)).click();
     }
 
     @Step("Клик по элементу {string}")
-    public void click(String xpath, String string) {
-        waitClickableElement(By.xpath(xpath));
-        getElement(By.xpath(xpath)).click();
+    public void click(String xpathOrName, String string) {
+        if (String.valueOf(xpathOrName.charAt(0)).equals("/")) {
+            waitClickableElement(By.xpath(xpathOrName));
+            getElement(By.xpath(xpathOrName)).click();
+        } else {
+            waitClickableElement(By.name(xpathOrName));
+            getElement(By.name(xpathOrName)).click();
+        }
     }
 
-    @Step("Клик по элементу")
     public void click(WebElement element) {
         element.click();
     }
@@ -172,6 +180,11 @@ public class BaseElementsPage {
     public int getRandomNumber(int min, int max) {
         Random random = new Random();
         return random.nextInt(max - min + 1) + min;
+    }
+
+    public String getRandomNumberString(int min, int max) {
+        Random random = new Random();
+        return String.valueOf(random.nextInt(max - min + 1) + min);
     }
 
     public By elementName(String name) {
@@ -283,6 +296,10 @@ public class BaseElementsPage {
     @Step("Select random value")
     public void clickRandomElement(By locator) {
         getElements(locator).get(getRandomNumber(getElementsAmount(locator))).click();
+    }
+
+    public WebElement getRandomElement(By locator) {
+        return getElements(locator).get(getRandomNumber(getElementsAmount(locator)));
     }
 
     public static String generateRandomEmail() {
