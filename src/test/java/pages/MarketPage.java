@@ -10,10 +10,10 @@ import java.util.Random;
 
 public class MarketPage extends BasePage {
     By checkboxPhoto = By.xpath("//XCUIElementTypeImage[@name=\"ic_gray_unselect_checkbox\"]");
-    By titleField = By.xpath("//XCUIElementTypeStaticText[@name=\"0/50\"]/preceding-sibling::XCUIElementTypeTextView");
+    By titleField = By.xpath("//XCUIElementTypeStaticText[contains(@name,\"/50\")]/preceding-sibling::XCUIElementTypeTextView");
     By selectList = By.xpath("//XCUIElementTypeTable//XCUIElementTypeStaticText");
     By yearOptions = By.xpath("(//XCUIElementTypePickerWheel)[1]");
-    By descriptionField = By.xpath("//XCUIElementTypeStaticText[@name=\"0/1000\"]/preceding-sibling::XCUIElementTypeTextView");
+    By descriptionField = By.xpath("//XCUIElementTypeStaticText[contains(@name,\"0/1000\")]/preceding-sibling::XCUIElementTypeTextView");
     By conditionImage = By.xpath("//XCUIElementTypeImage");
     By navigationBarLivingArea = By.xpath("//XCUIElementTypeNavigationBar[@name=\"Living area\"]");
     By livingAreaField = By.xpath("//XCUIElementTypeNavigationBar[@name=\"Living area\"]/following-sibling::XCUIElementTypeTextField");
@@ -61,6 +61,7 @@ public class MarketPage extends BasePage {
         setCondition();
         swipeUp();
         swipeUp();
+        waitASecond();
         clickButton("POST");
         waitElementName("Your ad has been accepted");
         waitElementName(marketName);
