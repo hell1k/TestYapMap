@@ -16,6 +16,10 @@ public class MarketTest extends BasePage {
     void housingLifecycle() throws InterruptedException {
         profile.openProfile();
         profile.clickMarket();
-        market.addHousing();
+        String marketName = market.addHousing();
+        market.openMarket(marketName);
+        market.checkingHousingElements(marketName);
+        String newMarketName = market.editHousing();
+        market.deleteMarket(newMarketName);
     }
 }
