@@ -9,11 +9,14 @@ import java.util.List;
 import java.util.Random;
 
 public class MarketPage extends BasePage {
+    By deletePhotoBtn = By.xpath("//XCUIElementTypeButton[@name=\"ic delete\"]");
     By checkboxPhoto = By.xpath("//XCUIElementTypeImage[@name=\"ic_gray_unselect_checkbox\"]");
     By titleField = By.xpath("//XCUIElementTypeStaticText[@name=\"0/50\"]/preceding-sibling::XCUIElementTypeTextView");
+    By titleFieldEdit = By.xpath("(//XCUIElementTypeTextView[@value])[1]");
     By selectList = By.xpath("//XCUIElementTypeTable//XCUIElementTypeStaticText");
     By yearOptions = By.xpath("(//XCUIElementTypePickerWheel)[1]");
     By descriptionField = By.xpath("//XCUIElementTypeStaticText[@name=\"0/1000\"]/preceding-sibling::XCUIElementTypeTextView");
+    By descriptionFieldEdit = By.xpath("//XCUIElementTypeStaticText[@name=\"11/1000\"]/preceding-sibling::XCUIElementTypeTextView");
     By conditionImage = By.xpath("//XCUIElementTypeImage");
     By navigationBarLivingArea = By.xpath("//XCUIElementTypeNavigationBar[@name=\"Living area\"]");
     By livingAreaField = By.xpath("//XCUIElementTypeNavigationBar[@name=\"Living area\"]/following-sibling::XCUIElementTypeTextField");
@@ -22,10 +25,28 @@ public class MarketPage extends BasePage {
     By typeBtn = By.xpath("//XCUIElementTypeTable/XCUIElementTypeCell[8]/XCUIElementTypeOther[1]/XCUIElementTypeOther");
     By typeOptions = By.xpath("//XCUIElementTypeTable/XCUIElementTypeCell//XCUIElementTypeOther[1]/XCUIElementTypeOther");
     By detailedDescriptionField = By.xpath("//XCUIElementTypeStaticText[@name=\"0/1000\"]/preceding-sibling::XCUIElementTypeTextView");
+    By detailedDescriptionFieldEdit = By.xpath("(//XCUIElementTypeTextView[@value])[2]");
     By shippingAvailableSwitch = By.xpath("(//XCUIElementTypeSwitch[@value])[1]");
     By exchangeIsPossibleSwitch = By.xpath("(//XCUIElementTypeSwitch[@value])[2]");
     By bargainingIsPossibleSwitch = By.xpath("(//XCUIElementTypeSwitch[@value])[3]");
     By doneBtn = By.xpath("//XCUIElementTypeButton[@name=\"Done\"]");
+    By yearBtn = By.xpath("//XCUIElementTypeCell//XCUIElementTypeStaticText[@name=\"Year\"]");
+    By vinField = By.xpath("//XCUIElementTypeApplication[@name=\"Relagram\"]/XCUIElementTypeWindow[1]/XCUIElementTypeOther[4]/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeTextField");
+    By trimBtn = By.xpath("(//XCUIElementTypeTextField[@value])[1]");
+    By mileageValue = By.xpath("(//XCUIElementTypeTextField[@value])[4]");
+    By priceField = By.xpath("//XCUIElementTypeCell//XCUIElementTypeStaticText[@name=\"Price\"]/following::XCUIElementTypeTextField[@value][1]\n"); //="Enter"
+    By litersField = By.xpath("//XCUIElementTypeTable/XCUIElementTypeCell[25]/XCUIElementTypeOther[1]/XCUIElementTypeOther");
+    By litersFieldEdit = By.xpath("//XCUIElementTypeTable/XCUIElementTypeCell[26]/XCUIElementTypeOther[1]/XCUIElementTypeOther");
+    By vinCode = By.xpath("//XCUIElementTypeTable/XCUIElementTypeCell[8]/XCUIElementTypeOther[1]/XCUIElementTypeOther");
+    By serialNumberField = By.xpath("//XCUIElementTypeTable/XCUIElementTypeCell[8]/XCUIElementTypeOther[1]/XCUIElementTypeOther");
+    By transmissionBtn = By.xpath("//XCUIElementTypeTable/XCUIElementTypeCell[9]/XCUIElementTypeOther[1]/XCUIElementTypeOther");
+    By transmissionEditBtn = By.xpath("//XCUIElementTypeTable/XCUIElementTypeCell[28]/XCUIElementTypeOther[1]/XCUIElementTypeOther");
+    By transmissionOptions = By.xpath("//XCUIElementTypeTable/XCUIElementTypeCell/XCUIElementTypeOther[1]/XCUIElementTypeOther");
+    By otherField = By.xpath("//XCUIElementTypeAlert/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeScrollView[1]/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeCollectionView/XCUIElementTypeCell/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[2]");
+    By workingHoursField = By.xpath("//XCUIElementTypeTable/XCUIElementTypeCell[14]/XCUIElementTypeOther[1]/XCUIElementTypeOther");
+    By arrowBtn = By.xpath("//XCUIElementTypeTable/XCUIElementTypeCell[1]/XCUIElementTypeOther[1]/XCUIElementTypeOther");
+    By closeBtn = By.xpath("//XCUIElementTypeImage[@name=\"UICloseButtonBackground\"]");
+    By treeDotsBtn = By.xpath("//XCUIElementTypeButton[@name=\"treeDots\"]");
 
     @Step("Add market Housing")
     public void addHousing() throws InterruptedException {
@@ -71,6 +92,10 @@ public class MarketPage extends BasePage {
         WebElement randomValue = getRandomElement(selectList);
         String valueName = randomValue.getText();
         randomValue.click();
+        if (valueName == "Other") {
+            setText(otherField, "Other");
+            click(elementName("Add"));
+        }
         return valueName;
     }
 
@@ -100,6 +125,13 @@ public class MarketPage extends BasePage {
         clickButton("Done");
     }
 
+    @Step("Set description edit")
+    void setDescriptionEdit() throws InterruptedException {
+        setText(descriptionFieldEdit, "description", "Description");
+        waitASecond();
+        clickButton("Done");
+    }
+
     @Step("Set {value}")
     void setValue(String fieldName, String value) throws InterruptedException {
         setText(By.xpath("//XCUIElementTypeStaticText[@name=\"" + fieldName + "\"]/following-sibling::XCUIElementTypeTextField"), value, fieldName);
@@ -113,8 +145,12 @@ public class MarketPage extends BasePage {
     }
 
     @Step("Add photo")
-    void addPhoto() {
+    void addPhoto() throws InterruptedException {
         clickButton("Add photo");
+        wait(2);
+        if (getElementsAmount(deletePhotoBtn) > 0) {
+            click(deletePhotoBtn, "нажатие на кнопку Удалить фото");
+        }
         clickRandomElement(checkboxPhoto);
         clickButton("Done");
     }
@@ -148,17 +184,19 @@ public class MarketPage extends BasePage {
     }
 
     @Step("create new Market Stuff")
-    public void createMarketStuff() throws InterruptedException {
+    public String createMarketStuff() throws InterruptedException {
+        wait(3);
         click(elementName("Market"));
         click(elementName("Add"));
         click(elementName("CREATE"));
-        addNewStaff();
+        String title = addNewStaff();
+        return title;
     }
 
     @Step("add new Stuff")
-    public void addNewStaff() throws InterruptedException {
+    public String addNewStaff() throws InterruptedException {
         addPhoto();
-        clearAndSendKeys(titleField, getRandomText(10));
+        String title = clearAndSendKeys(titleField, getRandomText(10));
         click(elementName("Done"));
         String value = selectValue("Category");
         if ("Clothing".equals(value) ||
@@ -179,6 +217,54 @@ public class MarketPage extends BasePage {
         swipeUp();
         clickButton("POST");
         waitElement(elementName("Market"));
+        return title;
+    }
+
+    @Step("edit Stuff")
+    public void editStuff(String title) throws InterruptedException {
+        click(elementName("Market"));
+        click(By.xpath("//XCUIElementTypeTable//XCUIElementTypeCell[.//XCUIElementTypeStaticText[@name='" + title + "']]"));
+        click(elementName("ic not favorited"));
+        click(treeDotsBtn);
+        click(elementName("Edit"));
+        addPhoto();
+        clearAndSendKeys(titleFieldEdit, getRandomText(10));
+        click(elementName("Done"));
+        String value = selectValue("Category");
+        if ("Clothing".equals(value) ||
+                "Jewelry".equals(value) ||
+                "Shoes".equals(value) ||
+                "Fashion accessories".equals(value) ||
+                "Transportation".equals(value)) {
+            addType();
+        }
+        selectLocation();
+        setValue("Price", "123");
+        click(shippingAvailableSwitch);
+        click(exchangeIsPossibleSwitch);
+        click(bargainingIsPossibleSwitch);
+        clearAndSendKeys(detailedDescriptionFieldEdit, getRandomText(10));
+        click(doneBtn);
+        swipeUp();
+        clickButton("SAVE");
+        clickBack();
+        waitElement(elementName("Market"));
+    }
+
+    @Step("Проверка меню Stuff (троеточие)")
+    public void checkingStuff(String title) throws InterruptedException {
+        click(elementName("Market"));
+        click(title);
+        click(elementName("ic not favorited"));
+        click(elementName("treeDots"), "меню группы (троеточие)");
+        clickButton("Share");
+        waitElementContainsName("Hey!");
+        click(treeDotsBtn, "меню группы (троеточие)");
+        click(treeDotsBtn, "меню группы (троеточие)");
+        clickButton("Generate QR code");
+        waitElementName("Share QR code");
+        click(elementName("ic close primary"), "кнопка закрытия QR кода");
+        click(elementName("Market"));
     }
 
     @Step("add Type")
@@ -194,4 +280,185 @@ public class MarketPage extends BasePage {
         WebElement randomTypeElement = typeElement.get(randomIndex);
         randomTypeElement.click();
     }
+
+    @Step("add Transmission")
+    public void addTransmission() throws InterruptedException {
+        click(transmissionBtn);
+        wait(2);
+        List<WebElement> typeElement = getElements(transmissionOptions);
+
+        if (typeElement.isEmpty()) {
+            throw new IllegalStateException("Список пуст — элементы не найдены по локатору: " + transmissionBtn);
+        }
+        int randomIndex = new Random().nextInt(typeElement.size());
+        WebElement randomTypeElement = typeElement.get(randomIndex);
+        randomTypeElement.click();
+    }
+
+    @Step("edit Transmission")
+    public void editTransmission() throws InterruptedException {
+        click(transmissionEditBtn);
+        wait(2);
+        List<WebElement> typeElement = getElements(transmissionOptions);
+
+        if (typeElement.isEmpty()) {
+            throw new IllegalStateException("Список пуст — элементы не найдены по локатору: " + transmissionEditBtn);
+        }
+        int randomIndex = new Random().nextInt(typeElement.size());
+        WebElement randomTypeElement = typeElement.get(randomIndex);
+        randomTypeElement.click();
+    }
+
+    @Step("add market Transportation")
+    public String addTransportation() throws InterruptedException {
+        String marketName = "Test market_" + getRandomNumber(999999);
+        wait(2);
+        clickButton("Add");
+        click("Transportation", "Transportation");
+        checkingCheckbox("Transportation");
+        clickButton("CREATE");
+        waitElementName("Transportation for sale");
+        addPhoto();
+        setText(titleField, "title");
+        click(doneBtn);
+        String value = selectValue("Type of transport");
+        if ("Heavy equipment".equals(value) || "Air transport".equals(value) || "Boats/water transport".equals(value)) {
+            clearAndSendKeys(serialNumberField, "123456789");
+            click(doneBtn);
+            selectValue("Make");
+            selectValue("Model");
+            selectValue("Make");
+            click(yearBtn);
+            swipeUp();
+            click(doneBtn);
+            selectValue("Body type");
+        }
+        click(vinCode);
+        clickButton("ENTER MANUALLY");
+        clearAndSendKeys(vinField, "JTEHF21A120058850");
+        clickButton("ic right arrow");
+        wait(3);
+        clearAndSendKeys(trimBtn, "Toyota");
+        click(doneBtn);
+        click(elementName("Mileage"));
+        setText(mileageValue, "92401");
+        clickButton("DONE");
+        selectLocation();
+        clearAndSendKeys(priceField, "34823");
+        click(doneBtn);
+        clickCheckbox("Exchange is possible");
+        clickCheckbox("Bargaining is possible");
+        setDescription();
+        selectValue("Engine cylinders");
+        clearAndSendKeys(litersField, "3");
+        click(doneBtn);
+        selectValue("Fuel type");
+        addTransmission();
+        selectValue("Drivetrain");
+        setCondition();
+        selectValue("Interior");
+        selectValue("Interior color");
+        selectValue("Exterior color");
+        clickCheckbox("Sunroof / moonroof");
+        clickCheckbox("Navigation system");
+        clickCheckbox("Alloy wheels");
+        clickCheckbox("Third row seating");
+        clickCheckbox("Bluetooth");
+        clickCheckbox("Backup camera");
+        clickCheckbox("Parking sensors");
+        clickCheckbox("Remote start");
+        clickCheckbox("Heated seats");
+        clickCheckbox("Quick order package");
+        clickCheckbox("Do You Have a Clear Title?");
+        clickCheckbox("Has Your Car Ever Been in an Accident?");
+        clickCheckbox("Does Your Car Have Cosmetic or Mechanical Issues?");
+        clickCheckbox("Does your car run and drive?");
+        clickCheckbox("Is there history on your vehicle resulting from flood, theft recovery or salvage loss?");
+        swipeUp();
+        swipeUp();
+        clickButton("POST");
+        waitElement(elementName("Market"));
+        return marketName;
+    }
+
+    @Step("edit market Transportation")
+    public void editTransportation(String title) throws InterruptedException {
+        click(title);
+        click(elementName("treeDots"));
+        click(elementName("Edit"));
+        addPhoto();
+        clearAndSendKeys(titleFieldEdit, "title");
+        click(doneBtn);
+        String value = selectValue("Type of transport");
+        if ("Heavy equipment".equals(value) || "Air transport".equals(value) || "Boats/water transport".equals(value)) {
+            clearAndSendKeys(serialNumberField, "123456789");
+            click(doneBtn);
+            clearAndSendKeys(workingHoursField, "2");
+            click(doneBtn);
+        }
+        click(vinCode);
+        clickButton("ENTER MANUALLY");
+        clearAndSendKeys(vinField, "JTEHF21A120058850");
+        clickButton("ic right arrow");
+        wait(3);
+        swipeUp();
+        clearAndSendKeys(trimBtn, "Nissan");
+        click(doneBtn);
+        click(elementName("Mileage"));
+        setText(mileageValue, "1000");
+        clickButton("DONE");
+        selectLocation();
+        clearAndSendKeys(priceField, "10244");
+        click(doneBtn);
+        clickCheckbox("Exchange is possible");
+        clickCheckbox("Bargaining is possible");
+        setDescriptionEdit();
+        selectValue("Engine cylinders");
+        clearAndSendKeys(litersFieldEdit, "1");
+        click(doneBtn);
+        selectValue("Fuel type");
+        editTransmission();
+        selectValue("Drivetrain");
+        setCondition();
+        selectValue("Interior");
+        selectValue("Interior color");
+        swipeUp();
+        selectValue("Exterior color");
+        clickCheckbox("Sunroof / moonroof");
+        clickCheckbox("Navigation system");
+        clickCheckbox("Alloy wheels");
+        clickCheckbox("Third row seating");
+        clickCheckbox("Bluetooth");
+        clickCheckbox("Backup camera");
+        clickCheckbox("Parking sensors");
+        clickCheckbox("Remote start");
+        clickCheckbox("Heated seats");
+        clickCheckbox("Quick order package");
+        clickCheckbox("Do You Have a Clear Title?");
+        clickCheckbox("Has Your Car Ever Been in an Accident?");
+        clickCheckbox("Does Your Car Have Cosmetic or Mechanical Issues?");
+        clickCheckbox("Does your car run and drive?");
+        clickCheckbox("Is there history on your vehicle resulting from flood, theft recovery or salvage loss?");
+        swipeUp();
+        swipeUp();
+        clickButton("SAVE");
+        clickBack();
+        waitElement(elementName("Market"));
+    }
+
+    @Step("Проверка меню Transportation (троеточие)")
+    public void checkingTransportation(String title) throws InterruptedException {
+        click(title);
+        click(elementName("ic not favorited"));
+        click(elementName("treeDots"), "меню группы (троеточие)");
+        clickButton("Share");
+        waitElementContainsName("Hey!");
+        click(treeDotsBtn, "меню группы (троеточие)");
+        click(treeDotsBtn, "меню группы (троеточие)");
+        clickButton("Generate QR code");
+        waitElementName("Share QR code");
+        click(elementName("ic close primary"), "кнопка закрытия QR кода");
+        click(elementName("Market"));
+    }
 }
+

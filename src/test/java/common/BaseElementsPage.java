@@ -47,11 +47,12 @@ public class BaseElementsPage {
     }
 
     @Step("Clear field and send keys")
-    public void clearAndSendKeys(By element, String text) {
+    public String clearAndSendKeys(By element, String text) {
         WebElement el = getElement(element);
         el.click();
         el.clear();
         el.sendKeys(text);
+        return text;
     }
 
     @Step("Clear field '{fieldName}' and send keys")

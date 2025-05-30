@@ -4,6 +4,7 @@ import java.util.Random;
 
 public class TestData {
     public String login = "wexezukecei-4791@yopmail.com";
+//    public String login = "pammoukabava-8241@yopmail.com";
     public String login2 = "conagriffeumme-2559@yopmail.com";
     public String password = "Qq12345678!";
     public String text_250 = "Social media has revolutionized the way we connect and communicate. With just a few taps on our devices," +
