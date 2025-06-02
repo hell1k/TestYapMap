@@ -1,6 +1,7 @@
 package pages;
 
 import common.BasePage;
+import common.Menu;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.PageLoadStrategy;
@@ -13,6 +14,8 @@ import java.util.List;
 
 public class AuthorizationPage extends BasePage {
     Permission permission = new Permission();
+    Menu menu = new Menu();
+    ProfilePage profile = new ProfilePage();
 
     By signInButton = By.xpath("//XCUIElementTypeButton[@name=\"SIGN IN\"]");
     By signInButton2 = By.xpath("//XCUIElementTypeButton[@label=\"SIGN IN\"]");
@@ -43,16 +46,28 @@ public class AuthorizationPage extends BasePage {
     By profileDataValues = By.xpath("//XCUIElementTypeCell//XCUIElementTypeStaticText[@value]");
 
     @Step("Авторизация")
-    public void authorization() throws InterruptedException {
-        if (getElementsAmount(signInButton) > 0) {
-            click(signInButton);
-            setText(loginField, data.login);
-            setText(passwordField, data.password);
-            click(signInButton2);
-        }
+//    public void authorization() throws InterruptedException {
+//        if (getElementsAmount(signInButton) > 0) {
+//            click(signInButton);
+//            setText(loginField, data.login);
+//            setText(passwordField, data.password);
+//            click(signInButton2);
+//        }
+//
+//        waitElement(profileIcon);
+//    }
 
+    public void authorization() throws InterruptedException {
+        if (getElementsAmount(menu.profile) > 0) {
+            profile.logout();
+        }
+        click(signInButton);
+        setText(loginField, data.login);
+        setText(passwordField, data.password);
+        click(signInButton2);
         waitElement(profileIcon);
     }
+
 
     @Step("Авторизация")
     public void authorization(String login) throws InterruptedException {

@@ -45,11 +45,11 @@ public class JobsPage extends BasePage {
         chooseHourPerWeek();
         chooseSalaryPer();
         chooseSalaryAmount();
-//        chooseCurrency();
         click(commissionsTipsBtn);
         click(canWorkRemotelyBtn);
-        click(elementName("POST"));
-    }
+        clickButton("POST");
+        clickButton("POST");
+        waitElement(elementName("Your ad has been accepted"));}
 
     @Step("редактироание Бизнеса")
     public void editJob() throws InterruptedException {
@@ -67,7 +67,6 @@ public class JobsPage extends BasePage {
         chooseHourPerWeek();
         chooseSalaryPer();
         chooseSalaryAmount();
-//        chooseCurrency();
         click(commissionsTipsBtn);
         click(canWorkRemotelyBtn);
         click(saveBtn);
@@ -82,7 +81,6 @@ public class JobsPage extends BasePage {
         click(elementName("treeDots"), "меню группы (троеточие)");
         clickButton("Share");
         waitElementContainsName("Hey!");
-        click(closeBtn);
         click(elementName("treeDots"), "меню группы (троеточие)");
         clickButton("Generate QR code");
         waitElementName("Share QR code");

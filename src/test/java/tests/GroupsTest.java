@@ -28,7 +28,6 @@ public class GroupsTest extends BasePage {
 
     @Test(description = "Взаимодействие с группой участником группы")
     public void testGroupParticipant() throws InterruptedException {
-        profile.logout();
         auth.authorization(data.login);
         profile.openProfile();
         String groupName = groups.createGroup();

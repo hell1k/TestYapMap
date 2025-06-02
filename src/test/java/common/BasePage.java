@@ -33,7 +33,7 @@ public class BasePage extends BaseElementsPage {
     public void setUp() throws MalformedURLException, InterruptedException {
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("appium:platformName", "iOS");
-        capabilities.setCapability("appium:platformVersion", "18.4");
+        capabilities.setCapability("appium:platformVersion", "18.5");
         capabilities.setCapability("appium:automationName", "XCUITest");
 //        capabilities.setCapability("appium:id", "BD9D4A92-2713-45AE-89EB-E01673F6E5CF");
         capabilities.setCapability("appium:deviceName", "iPhone 16 Pro");

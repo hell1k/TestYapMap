@@ -354,6 +354,7 @@ public class ProfilePage extends BasePage {
     }
 
     public void checkProfileElements() throws InterruptedException {
+        swipeUp();
         List<String> elements = Arrays.asList("Favorites", "Groups", "Events", "Businesses", "My Social networks", "Channels", "Dating",
                 "Market", "Pets", "Jobs", "Service finder", "Places to Visit", "Purchase history", "Pending requests",
                 "Blacklist", "Settings", "Help");
@@ -386,6 +387,7 @@ public class ProfilePage extends BasePage {
     @Step("Log Out")
     public void logout() {
         openProfile();
+        swipeUp();
         swipeUp();
         swipeUp();
         click(logoutBtn, "Log Out");
