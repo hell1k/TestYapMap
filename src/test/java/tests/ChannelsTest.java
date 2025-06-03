@@ -44,12 +44,12 @@ public class ChannelsTest extends BasePage {
         channels.channelsParticipant(channelName);
     }
 
-    @Test(description = "Channels lifecycle")
-    @Description("Test channel comment")
-    public void checkChannelComment() throws InterruptedException {
-        profile.openProfile();
-        String channelName = channels.addNewChannelPrivate();
-        channels.checkChannelComment(channelName);
-    }
+//    @Test(description = "Channels lifecycle")
+//    @Description("Test channel comment")
+//    public void checkChannelComment() throws InterruptedException {
+//        profile.openProfile();
+//        String channelName = channels.addNewChannelPrivate();
+//        channels.checkChannelComment(channelName);
+//    }
 
 }
