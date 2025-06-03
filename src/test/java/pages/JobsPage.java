@@ -32,11 +32,11 @@ public class JobsPage extends BasePage {
     By closeBtn = By.xpath("//XCUIElementTypeImage[@name=\"UICloseButtonBackground\"]");
 
     @Step("Добавление новой записи Job")
-    public void addNewJob () throws InterruptedException {
+    public String addNewJob () throws InterruptedException {
         click(elementName("Jobs"));
         click(elementName("Add"));
         click(selectExistingBusiness);
-        clearAndSendKeys(elementName("Position name"), getRandomText(10));
+        String jobName = clearAndSendKeys(elementName("Position name"), getRandomText(10));
         addProfessionType();
         clearAndSendKeys(dutiesDescription, getRandomText(20));
         clearAndSendKeys(requiredEducation, getRandomText(20));
@@ -49,7 +49,9 @@ public class JobsPage extends BasePage {
         click(canWorkRemotelyBtn);
         clickButton("POST");
         clickButton("POST");
-        waitElement(elementName("Your ad has been accepted"));}
+        waitElement(elementName("Your ad has been accepted"));
+        return jobName;
+    }
 
     @Step("редактироание Бизнеса")
     public void editJob() throws InterruptedException {

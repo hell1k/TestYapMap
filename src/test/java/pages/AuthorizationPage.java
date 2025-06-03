@@ -46,27 +46,27 @@ public class AuthorizationPage extends BasePage {
     By profileDataValues = By.xpath("//XCUIElementTypeCell//XCUIElementTypeStaticText[@value]");
 
     @Step("Авторизация")
-//    public void authorization() throws InterruptedException {
-//        if (getElementsAmount(signInButton) > 0) {
-//            click(signInButton);
-//            setText(loginField, data.login);
-//            setText(passwordField, data.password);
-//            click(signInButton2);
-//        }
-//
-//        waitElement(profileIcon);
-//    }
-
     public void authorization() throws InterruptedException {
-        if (getElementsAmount(menu.profile) > 0) {
-            profile.logout();
+        if (getElementsAmount(signInButton) > 0) {
+            click(signInButton);
+            setText(loginField, data.login);
+            setText(passwordField, data.password);
+            click(signInButton2);
         }
-        click(signInButton);
-        setText(loginField, data.login);
-        setText(passwordField, data.password);
-        click(signInButton2);
+
         waitElement(profileIcon);
     }
+
+//    public void authorization() throws InterruptedException {
+//        if (getElementsAmount(menu.profile) > 0) {
+//            profile.logout();
+//        }
+//        click(signInButton);
+//        setText(loginField, data.login);
+//        setText(passwordField, data.password);
+//        click(signInButton2);
+//        waitElement(profileIcon);
+//    }
 
 
     @Step("Авторизация")

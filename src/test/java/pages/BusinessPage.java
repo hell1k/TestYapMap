@@ -8,8 +8,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import java.util.List;
 import java.util.Random;
 
-import static java.awt.SystemColor.menu;
-
 public class BusinessPage extends BasePage {
 
     By profile = By.name("ic_tb_profile");
@@ -52,11 +50,11 @@ public class BusinessPage extends BasePage {
 
 
     @Step("Добавление новой записи Business")
-    public void addNewBusiness () throws InterruptedException {
+    public String addNewBusiness () throws InterruptedException {
         deleteBusiness();
         click(addBusinessBtn);
         addPhoto();
-        addBusinessName();
+        String businessName = addBusinessName();
         addBusinessDescription();
         addBusinessType();
         addSite();
@@ -66,6 +64,7 @@ public class BusinessPage extends BasePage {
         swipeUp();
         post();
         wait(2);
+        return businessName;
     }
 
     @Step("Добавление новой записи Business Все Поле")
@@ -179,8 +178,9 @@ public class BusinessPage extends BasePage {
     }
 
     @Step("добавление Названия Бизнеса")
-    public void addBusinessName () {
-        clearAndSendKeys(businessName, getRandomText(10));
+    public String addBusinessName () {
+        String nameBusiness = clearAndSendKeys(businessName, getRandomText(10));
+        return nameBusiness;
     }
 
     @Step("добавление Названия Бизнеса")

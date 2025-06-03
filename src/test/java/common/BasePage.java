@@ -28,6 +28,9 @@ public class BasePage extends BaseElementsPage {
     public JobsPage jobs;
     public PetsPage pets;
     public MarketPage market;
+    public FavoritesPage favorite;
+    public PlacePage place;
+    public ChannelsPage channels;
 
     @BeforeMethod
     public void setUp() throws MalformedURLException, InterruptedException {
@@ -59,6 +62,9 @@ public class BasePage extends BaseElementsPage {
         jobs = new JobsPage();
         pets = new PetsPage();
         market = new MarketPage();
+        favorite = new FavoritesPage();
+        place = new PlacePage();
+        channels = new ChannelsPage();
         auth.authorization();
     }
 
