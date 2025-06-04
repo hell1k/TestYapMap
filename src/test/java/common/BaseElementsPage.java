@@ -327,7 +327,7 @@ public class BaseElementsPage {
     }
 
     public void clickBack() {
-        if (getElements(backBtn).size() > 0) {
+        if (!getElements(backBtn).isEmpty()) {
             click(backBtn);
         }
     }

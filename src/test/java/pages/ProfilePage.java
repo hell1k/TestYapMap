@@ -13,7 +13,7 @@ public class ProfilePage extends BasePage {
     Menu menu = new Menu();
 
     By favorites = By.name("Favorites");
-    By business = By.name("Business");
+    By business = By.name("Businesses");
     By events = By.name("Events");
     By groups = By.name("Groups");
     By editProfileBtn = By.name("Edit profile");

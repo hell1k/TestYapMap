@@ -18,4 +18,21 @@ public class SearchBlock extends BasePage{
         waitElementName(value);
     }
 
+    @Step("Select Local Deals")
+    public void selectBusiness() {
+        clickButton("Local Deals");
+    }
+
+    @Step("Open {entryName}")
+    public void openEntry(String entryName) {
+        click(elementName(entryName));
+    }
+
+    @Step("Search and open {entryName}")
+    public void searchAndOpen(String entryName) {
+        searchValue(entryName);
+        openEntry(entryName);
+        waitElement(button("ic not favorited"));
+    }
+
 }
