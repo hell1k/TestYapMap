@@ -12,6 +12,7 @@ import org.testng.annotations.Test;
 
 import java.util.List;
 
+
 public class AuthorizationPage extends BasePage {
     Permission permission = new Permission();
     Menu menu = new Menu();
