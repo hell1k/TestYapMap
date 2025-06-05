@@ -5,6 +5,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import io.qameta.allure.Step;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+
 import java.util.List;
 import java.util.Random;
 
@@ -13,13 +14,13 @@ public class BusinessPage extends BasePage {
     By profile = By.name("ic_tb_profile");
     By addBusinessBtn = By.xpath("//XCUIElementTypeButton[@name=\"Add\"]");
     By businessBtn = By.xpath("(//XCUIElementTypeButton[@name=\"chevron\"])[4]");
-    By addPhotoBnt = By.xpath("//XCUIElementTypeButton[@name='Add photo']");
+    By addPhotoBtn = By.xpath("//XCUIElementTypeButton[@name='Add photo']");
     By chooseBusiness = By.xpath("//XCUIElementTypeCell/XCUIElementTypeOther[1]/XCUIElementTypeOther");
-    By deletePhotoBnt = By.xpath("//XCUIElementTypeButton[@name=\"icDeleteWhite\"]");
+    By deletePhotoBtn = By.xpath("//XCUIElementTypeButton[@name=\"icDeleteWhite\"]");
     By choosePhoto = By.xpath("//XCUIElementTypeWindow/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeCollectionView/XCUIElementTypeCell[2]/XCUIElementTypeOther/XCUIElementTypeImage[1]");
     By doneBnt = By.xpath("//XCUIElementTypeButton[@name=\"Done\"]");
-    By businessName = By.xpath("//XCUIElementTypeTable/XCUIElementTypeCell[5]/XCUIElementTypeTextView");
-    By businessDescription = By.xpath("//XCUIElementTypeTable/XCUIElementTypeCell[7]/XCUIElementTypeTextView");
+    By businessNameField = By.xpath("//XCUIElementTypeTable/XCUIElementTypeCell[5]/XCUIElementTypeTextView");
+    By businessDescriptionField = By.xpath("//XCUIElementTypeTable/XCUIElementTypeCell[7]/XCUIElementTypeTextView");
     By businessType = By.xpath("//XCUIElementTypeTable/XCUIElementTypeCell[9]/XCUIElementTypeOther[1]/XCUIElementTypeOther");
     By typesOfBusiness = By.xpath("//XCUIElementTypeTable/XCUIElementTypeCell/XCUIElementTypeOther[1]/XCUIElementTypeOther");
     By siteField = By.xpath("//XCUIElementTypeTable/XCUIElementTypeCell[10]/XCUIElementTypeOther[1]/XCUIElementTypeOther");
@@ -30,7 +31,7 @@ public class BusinessPage extends BasePage {
     By showToToggle = By.xpath("//XCUIElementTypeSwitch[@value]");
     By postBtn = By.xpath("//XCUIElementTypeButton[@name=\"POST\"]");
     By arrowBtn = By.xpath("//XCUIElementTypeButton[@name=\"chevron\"]");
-//    By saveBtn = By.xpath("//XCUIElementTypeButton[@name=\"SAVE\"]");
+    //    By saveBtn = By.xpath("//XCUIElementTypeButton[@name=\"SAVE\"]");
     By businessToDelete = By.xpath("//XCUIElementTypeCell/XCUIElementTypeOther[1]/XCUIElementTypeOther");
     By deleteBtn = By.xpath("//XCUIElementTypeButton[@name='Delete']");
     By yesBtn = By.xpath("//XCUIElementTypeButton[@name=\"Yes\"]");
@@ -47,7 +48,10 @@ public class BusinessPage extends BasePage {
     By deleteTextBtn = By.xpath("//XCUIElementTypeKey[@name=\"delete\"]");
     By siteName = By.xpath("//XCUIElementTypeTable/XCUIElementTypeCell[10]/XCUIElementTypeOther[1]/XCUIElementTypeOther");
     By confirmDeleteBtn = By.xpath("//XCUIElementTypeButton[@name=\"Yes\"]");
-
+    By uploadImageBtn = By.xpath("//XCUIElementTypeButton[@name=\"icImgOff\"]");
+    By uploadImageList = By.xpath("//XCUIElementTypeCollectionView//XCUIElementTypeImage");
+    By outgoingMessage = By.xpath("//XCUIElementTypeImage[@name=\"outgoingMessageBubble\"]");
+    By uploadFilesBtn = By.xpath("//XCUIElementTypeButton[@name=\"ic attach\"]");
 
     @Step("Добавление новой записи Business")
     public String addNewBusiness () throws InterruptedException {
@@ -60,15 +64,15 @@ public class BusinessPage extends BasePage {
         addSite();
         addPhone();
         addLocation();
-        showToOthers();
+//        showToOthers();
         swipeUp();
         post();
-        wait(2);
+        waitElementName(businessName);
         return businessName;
     }
 
     @Step("Добавление новой записи Business Все Поле")
-    public void addNewBusinessWithFullFields () throws InterruptedException {
+    public void addNewBusinessWithFullFields() throws InterruptedException {
         wait(2);
         deleteBusiness();
         click(addBusinessBtn);
@@ -130,11 +134,13 @@ public class BusinessPage extends BasePage {
         click(shareBtn);
         click(closeShareBtn);
     }
+
     public void generateQrCode() {
         click(treeDots);
         click(generateQrCodeBtn);
         click(closeQrCodeBtn);
     }
+
     public void deleteBusinessExtra() {
         click(treeDots);
         click(deleteBtnExtra);
@@ -143,7 +149,7 @@ public class BusinessPage extends BasePage {
 
     @Step("удаление Бизнеса")
     public void deleteBusiness() throws InterruptedException {
-        List<WebElement>  elements = driver.findElements(businessToDelete);
+        List<WebElement> elements = driver.findElements(businessToDelete);
 
         if (!elements.isEmpty()) {
             WebElement element = elements.get(0);
@@ -157,45 +163,49 @@ public class BusinessPage extends BasePage {
 
     @Step("добавление Фото профиля")
     public void addPhoto() throws InterruptedException {
-        if (getElementsAmount(deletePhotoBnt) > 0) {
-            click(deletePhotoBnt, "нажатие на кнопку Удалить фото");
+        if (getElementsAmount(deletePhotoBtn) > 0) {
+            click(deletePhotoBtn, "нажатие на кнопку Удалить фото");
         }
-        click(addPhotoBnt, "нажатие на кнопку Добавить фото");
+
+        click(addPhotoBtn, "нажатие на кнопку Добавить фото");
         click(choosePhoto, "нажатие на кнопку Выбрать фото");
         click(doneBnt, "нажатие на кнопку Подтвердить выбор");
-        wait(3);
+        waitHiddenElement(elementName("Photo"));
     }
 
     @Step("добавление Фото при Редактировании")
     public void addPhotoInEdit() throws InterruptedException {
-        click(addPhotoBnt, "нажатие на кнопку Добавить фото");
+        click(addPhotoBtn, "нажатие на кнопку Добавить фото");
+
         if (getElementsAmount(photoEditDeleteBtn) > 0) {
             click(photoEditDeleteBtn, "нажатие на кнопку Удалить фото");
         }
+
         click(choosePhoto, "нажатие на кнопку Выбрать фото");
         click(doneBnt, "нажатие на кнопку Подтвердить выбор");
         wait(3);
     }
 
     @Step("добавление Названия Бизнеса")
-    public String addBusinessName () {
-        String nameBusiness = clearAndSendKeys(businessName, getRandomText(10));
-        return nameBusiness;
+    String addBusinessName() {
+        String businessName = getRandomText(10);
+        clearAndSendKeys(businessNameField, businessName);
+        return businessName;
     }
 
     @Step("добавление Названия Бизнеса")
-    public void addBusinessNameFull () {
-        clearAndSendKeys(businessName, getRandomText(50));
+    public void addBusinessNameFull() {
+        clearAndSendKeys(businessNameField, getRandomText(50));
     }
 
     @Step("добавление Описания Бизнеса Все Поле")
-    public void addBusinessDescription () {
-        clearAndSendKeys(businessDescription, getRandomText(10));
+    public void addBusinessDescription() {
+        clearAndSendKeys(businessDescriptionField, getRandomText(10));
     }
 
     @Step("добавление Описания Бизнеса Все Поле")
-    public void addBusinessDescriptionFull () {
-        clearAndSendKeys(businessDescription, getRandomText(1000));
+    public void addBusinessDescriptionFull() {
+        clearAndSendKeys(businessDescriptionField, getRandomText(1000));
     }
 
     @Step("добавление типа бизнеса")
@@ -206,13 +216,14 @@ public class BusinessPage extends BasePage {
         if (typeElement.isEmpty()) {
             throw new IllegalStateException("Список годов пуст — элементы не найдены по локатору: " + businessType);
         }
+
         int randomIndex = new Random().nextInt(typeElement.size());
         WebElement randomTypeElement = typeElement.get(randomIndex);
         randomTypeElement.click();
     }
 
     @Step("добавление Сайта")
-    public void addSite () {
+    public void addSite() {
         click(siteField);
 //        if (getElementsAmount(siteName) > 0) {
 //            click(deleteTextBtn, "нажатие на кнопку Стереть");
@@ -222,7 +233,7 @@ public class BusinessPage extends BasePage {
     }
 
     @Step("добавление Телефона")
-    public void addPhone () {
+    public void addPhone() {
         click(phoneField);
         String randomPhone = getRandomPhone(9);
         clearField(phoneField);
@@ -244,24 +255,60 @@ public class BusinessPage extends BasePage {
     }
 
     @Step("добавление Локации")
-    public void addLocation () throws InterruptedException {
+    public void addLocation() throws InterruptedException {
         click(locationBtn);
         wait(2);
         click(saveBtn);
     }
 
     @Step("переключатель Показывать всем")
-    public void showToOthers () {
+    public void showToOthers() {
         click(showToToggle);
     }
 
     @Step("Нажатие кнопки POST")
-    public void post () {
+    public void post() {
         click(postBtn);
     }
 
     @Step("Нажатие кнопки SAVE")
-    public void saveChange () {
+    public void saveChange() {
         click(saveChangesBtn);
+    }
+
+    @Step("Send message")
+    public String sendMessage() {
+        String message = getRandomText(20);
+        setText(elementName("Type a message"), message, "Message field");
+
+        return message;
+    }
+
+    @Step("Send image")
+    public void sendImage() throws InterruptedException {
+        click(uploadImageBtn, "upload image");
+        clickRandomElement(uploadImageList);
+        clickSendBtn();
+        waitASecond();
+        clickSendBtn();
+        waitElement(outgoingMessage);
+    }
+
+    @Step("Click send")
+    void clickSendBtn() {
+        clickButton("icSendOn");
+    }
+
+    @Step("Send files")
+    public void sendFiles() {
+        click(uploadFilesBtn, "upload files");
+        clickButton("Select from gallery");
+        click(elementName("ic_gray_unselect_checkbox"), "photo");
+        waitElement(outgoingMessage);
+    }
+
+    @Step("Click treeDots")
+    public void clickTreeDots() {
+        click(treeDots, "menu");
     }
 }

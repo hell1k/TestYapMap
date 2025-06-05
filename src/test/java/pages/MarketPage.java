@@ -47,9 +47,13 @@ public class MarketPage extends BasePage {
     By arrowBtn = By.xpath("//XCUIElementTypeTable/XCUIElementTypeCell[1]/XCUIElementTypeOther[1]/XCUIElementTypeOther");
     By closeBtn = By.xpath("//XCUIElementTypeImage[@name=\"UICloseButtonBackground\"]");
     By treeDotsBtn = By.xpath("//XCUIElementTypeButton[@name=\"treeDots\"]");
+    By treeDots = By.xpath("//XCUIElementTypeButton[@name=\"treeDots\"]");
+    By closeShareBtn = By.name("header.closeButton");
+    By closeQrCodeBtn = By.xpath("//XCUIElementTypeButton[@name=\"ic close primary\"]");
+
 
     @Step("Add market Housing")
-    public void addHousing() throws InterruptedException {
+    public String addHousing() throws InterruptedException {
         String marketName = "Test market_" + getRandomNumber(999999);
         clickButton("Add");
         click("Housing", "Housing");
@@ -57,11 +61,10 @@ public class MarketPage extends BasePage {
         clickButton("CREATE");
         waitElementName("Housing for sale");
         addPhoto();
-        setText(titleField, marketName, "title");
+        setText(titleField, marketName, "Title");
         selectValue("Property Type");
         selectYearBuilt();
         selectLocation();
-//        setValue("ZIP", getRandomNumberString(100000, 999999));
         setValue("Price", getRandomNumberString(100000, 999999));
         clickCheckbox("Exchange is possible");
         clickCheckbox("Bargaining is possible");
@@ -80,9 +83,81 @@ public class MarketPage extends BasePage {
         setCondition();
         swipeUp();
         swipeUp();
+        waitASecond();
         clickButton("POST");
         waitElementName("Your ad has been accepted");
         waitElementName(marketName);
+        return marketName;
+    }
+
+    @Step("Проверка опций Housing")
+    public void checkingHousingElements(String marketName) throws InterruptedException {
+        clickTreeDots();
+        clickButton("Share");
+        waitElementContainsName("Hey! Look at the house advertisement \"" + marketName + "\"");
+        click(closeShareBtn);
+        waitASecond();
+        waitASecond();
+        clickTreeDots();
+        clickButton("Generate QR code");
+        waitElementName("Share QR code");
+        click(closeQrCodeBtn, "close QR code button");
+    }
+
+    @Step("Click treeDots")
+    public void clickTreeDots() {
+        click(treeDots, "market menu");
+    }
+
+    @Step("Edit Housing")
+    public String editHousing() throws InterruptedException {
+        click(elementName("treeDots"));
+        click(elementName("Edit"));
+        String newMarketName = "Test market_" + getRandomNumber(999999);
+        addPhoto();
+        clearAndSendKeys(titleField, newMarketName, "Title");
+        selectValue("Property Type");
+        selectYearBuilt();
+        selectLocation();
+        setValue("Price", getRandomNumberString(100000, 999999));
+        clickCheckbox("Exchange is possible");
+        clickCheckbox("Bargaining is possible");
+        setDescription();
+        setValue("Bedrooms", getRandomNumberString(1, 10));
+        setValue("Bathrooms", getRandomNumberString(1, 10));
+        clickCheckbox("Basement");
+        clickCheckbox("Pool");
+        setValue("Parking spots number", getRandomNumberString(1, 10));
+        selectValue("Parking type");
+        selectValue("Laundry type");
+        selectValue("Air condition type");
+        selectValue("Heating type");
+        setLivingArea();
+        setLotSize();
+        setCondition();
+        swipeUp();
+        swipeUp();
+        clickButton("SAVE");
+        waitElement(elementName("treeDots"));
+        clickButton("Market");
+        waitElement(By.xpath("//XCUIElementTypeStaticText[@name='" + newMarketName + "']"));
+        return newMarketName;
+    }
+
+    @Step("Open {marketName}")
+    public void openMarket(String marketName) {
+        click(By.xpath("//XCUIElementTypeStaticText[@name=\"" + marketName + "\"]/following-sibling::XCUIElementTypeButton"));
+    }
+
+    @Step("Delete pet {marketName}")
+    public void deleteMarket(String marketName) {
+        openMarket(marketName);
+        clickTreeDots();
+        clickButton("Delete");
+        waitElementName("Are you sure you want to delete?");
+        clickButton("Yes");
+        waitElementName("Market");
+        waitHiddenElement(elementName(marketName));
     }
 
     @Step("Select '{selectName}'")
@@ -120,7 +195,7 @@ public class MarketPage extends BasePage {
 
     @Step("Set description")
     void setDescription() throws InterruptedException {
-        setText(descriptionField, "description", "Description");
+        clearAndSendKeys(descriptionField, "description", "Description");
         waitASecond();
         clickButton("Done");
     }
@@ -134,7 +209,7 @@ public class MarketPage extends BasePage {
 
     @Step("Set {value}")
     void setValue(String fieldName, String value) throws InterruptedException {
-        setText(By.xpath("//XCUIElementTypeStaticText[@name=\"" + fieldName + "\"]/following-sibling::XCUIElementTypeTextField"), value, fieldName);
+        clearAndSendKeys(By.xpath("//XCUIElementTypeStaticText[@name=\"" + fieldName + "\"]/following-sibling::XCUIElementTypeTextField"), value, fieldName);
         waitASecond();
         clickButton("Done");
     }
