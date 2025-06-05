@@ -40,7 +40,8 @@ public class FavoritesPage extends BasePage {
         waitElement(elementName(businessName));
     }
 
-    public void addToFavoritesMarket(String marketName) {
+    public void addToFavoritesMarket(String marketName) throws InterruptedException {
+        wait(2);
         click(elementName(marketName));
         click(addToFavoriteBtn);
         click(elementName("Market"));

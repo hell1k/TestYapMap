@@ -12,12 +12,13 @@ public class ChannelsPage extends BasePage {
     By description = By.xpath("//XCUIElementTypeTable/XCUIElementTypeCell[3]/XCUIElementTypeTextView");
     By privateBtn = By.xpath("//XCUIElementTypeSwitch[@name=\"Private\"]");
     By showMyExactLocationBtn = By.xpath("//XCUIElementTypeSwitch[@name=\"Show my exact location\"]");
-    By channelLogo = By.xpath("//XCUIElementTypeButton[@name=\"channelMainPlaceholder\"]");
+    By channelLogo = By.xpath("//XCUIElementTypeNavigationBar[@name]/XCUIElementTypeButton[2]"); //XCUIElementTypeButton[@name="channelMainPlaceholder"]
     By treeDots = By.xpath("//XCUIElementTypeButton[@name=\"treeDots\"]");
     By favoriteBtn = By.xpath("//XCUIElementTypeButton[@name=\"ic not favorited\"]");
     By closeShareBtn = By.name("header.closeButton");
     By closeQrCodeBtn = By.xpath("//XCUIElementTypeButton[@name=\"ic close primary\"]");
     By messageField = By.xpath("//XCUIElementTypeApplication[@name=\"Relagram\"]/XCUIElementTypeWindow[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[1]");
+    By channelMessageField = By.xpath("//XCUIElementTypeWindow/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[1]");
     By deleteAndLeaveBtn = By.xpath("//XCUIElementTypeTable/XCUIElementTypeCell[14]/XCUIElementTypeOther[1]/XCUIElementTypeOther");
     By logoutBtn = By.xpath("//XCUIElementTypeStaticText[@name=\"Log Out\"]");
     By signInButton = By.xpath("//XCUIElementTypeButton[@name=\"SIGN IN\"]");
@@ -26,6 +27,8 @@ public class ChannelsPage extends BasePage {
     By passwordField = By.xpath("//XCUIElementTypeSecureTextField");
     By profileIcon = By.xpath("//XCUIElementTypeImage[@name=\"ic_tb_profile\"]");
     By leaveChannelBtn = By.xpath("//XCUIElementTypeTable/XCUIElementTypeCell[13]/XCUIElementTypeOther[1]/XCUIElementTypeOther");
+    By yesBtn = By.xpath("//XCUIElementTypeButton[@name=\"Yes\"]");
+    By channelsList = By.xpath("//XCUIElementTypeCollectionView/XCUIElementTypeCell[1]/XCUIElementTypeOther/XCUIElementTypeOther[1]/XCUIElementTypeOther");
 
     public String addNewChannelPrivate() throws InterruptedException {
         String channelName = "Test channel_" + getRandomNumber(999999);
@@ -97,19 +100,21 @@ public class ChannelsPage extends BasePage {
         waitElementName(membersName);
     }
 
-    public void checkChannel(String channelName) {
-        click(channelName);
+    public void checkChannel(String channelName) throws InterruptedException {
+        wait(1);
+        click(By.id(channelName));
         click(channelLogo);
         click(treeDots);
         clickButton("Edit");
-        clearAndSendKeys(nameField, "Test channel_" + getRandomNumberByLength(37));
-        clearAndSendKeys(description, "Test channel_" + getRandomNumberByLength(937));
+        String newName = clearAndSendKeys(nameField, "Test channel_" + getRandomNumber(999999));
+        clearAndSendKeys(description, "Test channel_" + getRandomNumber(999999));
         clickButton("Save");
         click(favoriteBtn);
         click(treeDots);
         clickButton("Share");
         waitElementContainsName("See this channel on Relagram");
         click(closeShareBtn);
+        click(treeDots);
         clickButton("Share to Relagram");
         clickButton("Back");
         click(elementName("treeDots"));
@@ -117,19 +122,21 @@ public class ChannelsPage extends BasePage {
         waitElementName("Share QR code");
         click(closeQrCodeBtn, "close QR code button");
         clickButton("ic ic back");
-        waitElement(By.id(channelName));
+        click(elementName("Channels"));
+        waitElement(By.id(newName));
     }
 
     public void checkingUserItemsAndDelete(String channelName) {
-        click(channelName);
+        click(By.id(channelName));
         click(channelLogo);
         click(treeDots);
         clickButton("Edit");
         addAdmin();
         addMembers();
         clickButton("ic ic back");
+        click(yesBtn);
         clickButton("ic ic back");
-        clearAndSendKeys(messageField, getRandomText(20));
+        clearAndSendKeys(messageField, getRandomText(10));
         clickButton("icSendOn");
         click(channelLogo);
         swipeUp();
@@ -138,6 +145,7 @@ public class ChannelsPage extends BasePage {
     }
 
     public void channelsParticipant(String channelName) throws InterruptedException {
+        click(elementName("Profile"));
         logout();
         authorization(data.login2);
         click(elementName("Channels"));
@@ -162,7 +170,7 @@ public class ChannelsPage extends BasePage {
 
     public void joinChannel(String channelName) {
         click(elementName("Channels"));
-        click(channelName);
+        click(By.id(channelName));
         clickButton("JOIN");
         waitElement(elementName("Leave channel"));
     }
@@ -188,24 +196,25 @@ public class ChannelsPage extends BasePage {
         waitElement(profileIcon);
     }
 
-//    @Step("Test channel comment")
-//    public void checkChannelComment(String channelName) throws InterruptedException {
-//        click(channelName);
-//        String channelMessage = clearAndSendKeys(messageField, getRandomText(20));
-//        clickButton("icSendOn");
-//        clickButton("Channels");
-//        clickButton("Back");
-//        logout();
-//        authorization(data.login2);
-//        joinChannel(channelName);
-//        clickButton("Channels");
-//        click(channelName);
-//        checkingChannelCommentMember(channelMessage);
-//    }
-//
-//    public void checkingChannelCommentMember(String channelMessage) {
-//        clickButton("Comment");
-//        waitElement(By.id(channelMessage));
-//
-//    }
+    @Step("Test channel comment")
+    public void checkChannelComment(String channelName) throws InterruptedException {
+        waitElement(channelsList);
+        click(By.id(channelName));
+        click(channelMessageField);
+        String channelMessage = clearAndSendKeys(channelMessageField, "Test message");
+        clickButton("icSendOn");
+        clickButton("Channels");
+        click(elementName("Profile"));
+        logout();
+        authorization(data.login2);
+        joinChannel(channelName);
+        clickButton("Channels");
+        click(By.id(channelName));
+        checkingChannelCommentMember(channelMessage);
+    }
+
+    public void checkingChannelCommentMember(String channelMessage) {
+        clickButton("Comment");
+        waitElement(By.id(channelMessage));
+    }
 }

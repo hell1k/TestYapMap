@@ -183,13 +183,6 @@ public class BaseElementsPage {
         return random.nextInt(max - min + 1) + min;
     }
 
-    public int getRandomNumberByLength(int length) {
-        Random random = new Random();
-        int min = (int) Math.pow(10, length - 1);
-        int max = (int) Math.pow(10, length) - 1;
-        return random.nextInt(max - min + 1) + min;
-    }
-
     public String getRandomNumberString(int min, int max) {
         Random random = new Random();
         return String.valueOf(random.nextInt(max - min + 1) + min);
