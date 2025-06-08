@@ -342,5 +342,10 @@ public class BaseElementsPage {
     public void waitHiddenElement(By locator, String string) {
         wait.until(ExpectedConditions.invisibilityOfElementLocated(locator));
     }
+
+    @Step("Wait text: {text}")
+    public void waitText(String text) {
+        waitElement(By.xpath("//*[contains(text(), '" + text + "')]"));
+    }
 }
 

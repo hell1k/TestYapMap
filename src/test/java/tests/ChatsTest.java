@@ -17,8 +17,17 @@ public class ChatsTest extends BasePage {
         search.searchAndOpen(businessName);
         business.clickTreeDots();
         clickButton("Send message");
-//        String message = business.sendMessage();
+        String message = business.sendMessage();
         business.sendImage();
         business.sendFiles();
+        clickBack();
+        clickBack();
+        profile.logout();
+        auth.authorization(data.login);
+        menu.clickChats();
+        chats.selectChat("Groups");
+        chats.selectChat("Businesses");
+        click(elementName(businessName));
+        waitText(message);
     }
 }

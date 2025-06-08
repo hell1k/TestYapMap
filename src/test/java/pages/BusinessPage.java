@@ -54,7 +54,7 @@ public class BusinessPage extends BasePage {
     By uploadFilesBtn = By.xpath("//XCUIElementTypeButton[@name=\"ic attach\"]");
 
     @Step("Добавление новой записи Business")
-    public String addNewBusiness () throws InterruptedException {
+    public String addNewBusiness() throws InterruptedException {
         deleteBusiness();
         click(addBusinessBtn);
         addPhoto();
@@ -108,20 +108,9 @@ public class BusinessPage extends BasePage {
         wait(2);
     }
 
-    @Step("Open profile")
-    public void clickProfile() {
-        click(profile);
-    }
-
-    @Step("открытие вкладки Бизнес")
-    public void openBusiness() {
-        click(businessBtn);
-    }
-
-    public void clickOnBusiness() {
-        clickProfile();
-        openBusiness();
-        click(chooseBusiness);
+    @Step("Open {businessName}")
+    public void openBusiness(String businessName) {
+        click(elementName(businessName));
     }
 
     public void addToFavorite() {

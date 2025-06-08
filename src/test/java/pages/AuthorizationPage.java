@@ -69,8 +69,7 @@ public class AuthorizationPage extends BasePage {
         waitElement(profileIcon);
     }
 
-
-    @Step("Авторизация")
+    @Step("Авторизация пользователем {login}")
     public void authorization(String login) throws InterruptedException {
         if (getElementsAmount(signInButton) > 0) {
             click(signInButton);
@@ -136,7 +135,6 @@ public class AuthorizationPage extends BasePage {
         waitElement(profileIcon);
     }
 
-    @Test
     public String getVerificationCode(String mail) throws InterruptedException {
         FirefoxOptions options2 = new FirefoxOptions();
         options2.setPageLoadStrategy(PageLoadStrategy.EAGER);

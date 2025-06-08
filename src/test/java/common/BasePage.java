@@ -31,6 +31,8 @@ public class BasePage extends BaseElementsPage {
     public FavoritesPage favorite;
     public PlacePage place;
     public ChannelsPage channels;
+    public Menu menu;
+    public ChatsPage chats;
 
     @BeforeMethod
     public void setUp() throws MalformedURLException, InterruptedException {
@@ -65,6 +67,8 @@ public class BasePage extends BaseElementsPage {
         favorite = new FavoritesPage();
         place = new PlacePage();
         channels = new ChannelsPage();
+        menu = new Menu();
+        chats = new ChatsPage();
         auth.authorization();
     }
 

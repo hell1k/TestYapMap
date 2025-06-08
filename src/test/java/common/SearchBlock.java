@@ -16,6 +16,7 @@ public class SearchBlock extends BasePage{
     public void searchValue(String value) {
         setText(searchField, value);
         waitElementName(value);
+        click(elementName("Search"));
     }
 
     @Step("Select Local Deals")
@@ -31,6 +32,7 @@ public class SearchBlock extends BasePage{
     @Step("Search and open {entryName}")
     public void searchAndOpen(String entryName) {
         searchValue(entryName);
+        openEntry(entryName);
         openEntry(entryName);
         waitElement(button("ic not favorited"));
     }
